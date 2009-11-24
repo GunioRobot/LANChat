@@ -1,7 +1,6 @@
 package networking;
 
 import java.io.IOException;
-import java.rmi.ServerException;
 
 public class Client extends Peer{
 

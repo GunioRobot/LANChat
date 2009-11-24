@@ -15,7 +15,6 @@ public class MessageParser {
         // IOException if there was a parsing problem.
         DataInputStream stream = new DataInputStream(new ByteArrayInputStream(data));
         int messageType = stream.readInt();
-        System.out.println("Message type field is " + messageType);
         switch (MessageType.get(messageType)) {
             case TEXT_MESSAGE:
                 return new TextMessage(stream);
