@@ -35,6 +35,9 @@ public class Peer extends Thread {
 		}
 	}
 	
+	public String getLocalAddress() {
+		return socket.getLocalAddress().getHostAddress();
+	}
 	public int getPort(){
 		return socket.getLocalPort();
 	}
@@ -52,7 +55,8 @@ public class Peer extends Thread {
 		throws IOException {
         // REQUIRES: data is not null
         // EFFECTS: Encapsulates data in a datagram and sends to the server
-        this.sendTo(message, this.serverAddress);
+        System.out.println("[Peer] Sending " + message.getType() + " from port " + socket.getLocalPort());
+		this.sendTo(message, this.serverAddress);
 	}
 	
 	public void sendTo(Message message, SocketAddress destination)
@@ -80,7 +84,6 @@ public class Peer extends Thread {
         
         while(true) {
             try {
-                System.out.println("Peer: listening for messages");
                 packet = this.receiveData();
 
             } catch (IOException ex) {
@@ -97,7 +100,7 @@ public class Peer extends Thread {
                 continue;
             }
 
-            handleMessage(message);
+            handleMessage(message, (InetSocketAddress)packet.getSocketAddress());
         }
     }
 	
@@ -105,9 +108,9 @@ public class Peer extends Thread {
 		return socket.getLocalSocketAddress();
 	}
 
-    protected void handleMessage(Message message) {
+    protected void handleMessage(Message message, InetSocketAddress source) {
 
-        System.out.println("Peer: received a " + message.getType());
+		System.out.println("[Peer] Received a " + message.getType());
         switch(message.getType()) {
             case TEXT_MESSAGE:
                 TextMessage txt = (TextMessage)message;

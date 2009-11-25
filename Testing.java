@@ -36,17 +36,9 @@ public class Testing {
 
 	public static void main(String[] args) throws InterruptedException, IOException {
 
-		SocketAddress addr1 = new InetSocketAddress("192.168.2.0", 49000);
-		SocketAddress addr2 = new InetSocketAddress("192.168.2.0", 48000);
-
-		System.out.println(addr1.equals(addr2));
-		/*
-		// Setup a server
-		Peer peer1 = new Server(64000, "name", "pw");
-        peer1.setDaemon(true);
-        peer1.start();
-        */
-
+		InetAddress addr2  = Inet4Address.getLocalHost();
+		System.out.println(addr2.getHostAddress());
+		
 		InetSocketAddress addr = new InetSocketAddress(54000);
 		
 		// Setup a server
@@ -54,22 +46,26 @@ public class Testing {
 		server.setDaemon(true);
 		server.start();
 		
-        Peer peer = new Client(addr.getHostName(), addr.getPort(), "username", "pw");
-        peer.setDaemon(true);
-        peer.start();
+        Peer client = new Client(addr.getHostName(), addr.getPort(), "username", "pw");
+        client.setDaemon(true);
+        client.start();
         
-        Message[] messages = {new Join("rob", "pw", addr.getHostName(), addr.getPort()),
+        Message[] messages = {new Join("rob", "pw", client.getLocalAddress(), client.getPort()),
         					  new TextMessage("rob", "message1", "password"),
         					  new TextMessage("will", "message2", "password"),
         					  new ChannelUpdate("rob", "message2", new Date()),
-        					  new Announce("server1", ((InetSocketAddress)peer.getLocalSocketAddress()).getHostName(), 64000, 0, true),
+        					  new Announce("server1", addr.getHostName(), 64000, 0, true),
         					  new Refuse("Invalid Password")};
 
         // Send some messages to ourself
-        for(Message message : messages) {
-        	peer.send(message);
-        }
-
+        /*for(Message message : messages) {
+        	client.send(message);
+        }*/
+        
+        client.send(new Join("rob", "pw", client.getLocalAddress(), client.getPort()));
+        client.send(new TextMessage("rob", "message1", "pw"));
+        client.send(new TextMessage("rob", "message2", "pw"));
+        
         
         String mAddr = "230.0.0.1";
         int mPort = 45000;
@@ -82,7 +78,7 @@ public class Testing {
         ServerAnnouncer announcer = new ServerAnnouncer(mAddr, mPort, 1000, (Server) server);
         announcer.start();
 
-        Thread.sleep(1000);
+        Thread.sleep(3000);
 	}
 
 }

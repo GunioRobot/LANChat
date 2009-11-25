@@ -8,6 +8,7 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 
 public class Server extends Peer{
@@ -29,7 +30,7 @@ public class Server extends Peer{
 
 //Client List Stuff
 	public boolean addClient(ClientInfo client){
-		System.out.println(client.clientHandle + " " + client.clientAddress + " " + client.clientPort);
+		System.out.println("[Server] adding client: " + client.clientHandle + " " + client.clientAddress + " " + client.clientPort);
 		clientList.add(client);
 		return true;
 	}
@@ -54,10 +55,13 @@ public class Server extends Peer{
 	public void send(Message message) throws IOException{
 		//Send to all clients
 		if(message.getType()==MessageType.TEXT_MESSAGE){
+			TextMessage textmessage = (TextMessage)message;
+			
 			Iterator<ClientInfo> itr = clientList.iterator();
 			int i=0;
 			while( itr.hasNext() ){
-				sendTo(message, itr.next().clientSocket);
+				
+				sendTo(new ChannelUpdate(textmessage.clientHandle, textmessage.message, new Date()), itr.next().clientSocket);
 			}
 		}
 	}
@@ -76,7 +80,7 @@ public class Server extends Peer{
 	private static String msgParse(Message message){
 		//TODO: format msg properly
 		TextMessage m = (TextMessage)message;
-		String s = (Time.time() + " " + m.clientHandle + " " + m.message);
+		String s = "\n[" + Time.time() + "] " + m.clientHandle + ":  '" + m.message + "'\n";
 		return s;
 	}
 	
@@ -86,14 +90,14 @@ public class Server extends Peer{
 	}
 	
 	@Override
-	protected void handleMessage(Message message) {
+	protected void handleMessage(Message message, InetSocketAddress source) {
+		System.out.println("[Server] Received a " + message.getType() + " from " + source);
         switch(message.getType()) {
 	        case TEXT_MESSAGE:
 	        	try{
-	        		System.out.println("text");
 	        		receive(message);
 	        	} catch(IOException e){
-	        		
+	        		System.out.println(e);
 	        	}
 	        	break;
 	        case CHANNEL_UPDATE:
@@ -108,7 +112,7 @@ public class Server extends Peer{
 				}
 				else{
 					try {
-						super.sendTo(new Refuse("Invalid Password"), new InetSocketAddress(m.clientAddress, m.clientPort));
+						sendTo(new Refuse("Invalid Password"), new InetSocketAddress(m.clientAddress, m.clientPort));
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

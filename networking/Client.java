@@ -1,6 +1,7 @@
 package networking;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 
 public class Client extends Peer{
 
@@ -48,8 +49,10 @@ public class Client extends Peer{
 	}
 	
 	@Override
-	protected void handleMessage(Message message) {
-		System.out.println("Peer: received a " + message.getType());
+	protected void handleMessage(Message message, InetSocketAddress source) {
+		
+		System.out.println("[Client] Received a " + message.getType() + " from " + source);
+		
         switch(message.getType()) {
 	        case TEXT_MESSAGE:
 	            break;
@@ -57,7 +60,7 @@ public class Client extends Peer{
 	        	try{
 	        		receive(message);
 	        	} catch(Exception e){
-	        		
+	        		System.out.println(e);
 	        	}
 	        	break;
 	        case ANNOUNCE:
