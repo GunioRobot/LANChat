@@ -86,12 +86,14 @@ public class Server extends Peer{
 	
 	public void display(String message){
 		//TODO: send formatted msg to display
-		System.out.println(message);
+		//System.out.println(message);
 	}
 	
 	@Override
 	protected void handleMessage(Message message, InetSocketAddress source) {
-		System.out.println("[Server] Received a " + message.getType() + " from " + source);
+
+		super.handleMessage(message, source);
+		
         switch(message.getType()) {
 	        case TEXT_MESSAGE:
 	        	try{
@@ -126,5 +128,10 @@ public class Server extends Peer{
         }
 
     }
+	
+	@Override
+	public String getPeerName() {
+		return this.serverName;
+	}
 
 }

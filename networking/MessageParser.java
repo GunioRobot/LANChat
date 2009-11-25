@@ -26,6 +26,8 @@ public class MessageParser {
             	return new Join(stream);
             case REFUSE:
             	return new Refuse(stream);
+            case LEAVE:
+            	return new Leave(stream);
         }
         return new UnknownMessage(stream);
     }

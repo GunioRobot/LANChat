@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
 
-public class Peer extends Thread {
+public abstract class Peer extends Thread {
     // OVERVIEW: A peer represents a client or server on the network. It can 
     // send and receive basic messages using DatagramSockets.
 
@@ -55,7 +55,7 @@ public class Peer extends Thread {
 		throws IOException {
         // REQUIRES: data is not null
         // EFFECTS: Encapsulates data in a datagram and sends to the server
-        System.out.println("[Peer] Sending " + message.getType() + " from port " + socket.getLocalPort());
+        System.out.println("[" + getPeerName() + "] Sending " + message.getType() + " from port " + socket.getLocalPort());
 		this.sendTo(message, this.serverAddress);
 	}
 	
@@ -110,13 +110,12 @@ public class Peer extends Thread {
 
     protected void handleMessage(Message message, InetSocketAddress source) {
 
-		System.out.println("[Peer] Received a " + message.getType());
-        switch(message.getType()) {
-            case TEXT_MESSAGE:
-                TextMessage txt = (TextMessage)message;
-                System.out.println(String.format("[TextMessage] %s: %s", txt.clientHandle, txt.message));
-        }
+		System.out.println("[" + getPeerName() + "] Received a " + message.getType());
 
+    }
+    
+    public String getPeerName() {
+    	return "Peer";
     }
 
 }

@@ -42,31 +42,37 @@ public class Testing {
 		InetSocketAddress addr = new InetSocketAddress(54000);
 		
 		// Setup a server
-		Peer server = new Server(addr.getPort(), "server", "pw");
+		Peer server = new Server(addr.getPort(), "Server1", "pw");
 		server.setDaemon(true);
 		server.start();
-		
-        Peer client = new Client(addr.getHostName(), addr.getPort(), "username", "pw");
-        client.setDaemon(true);
-        client.start();
         
-        Message[] messages = {new Join("rob", "pw", client.getLocalAddress(), client.getPort()),
+        Message[] messages = {new Join("rob", "pw", "127.0.0.1", 56780),
         					  new TextMessage("rob", "message1", "password"),
         					  new TextMessage("will", "message2", "password"),
         					  new ChannelUpdate("rob", "message2", new Date()),
         					  new Announce("server1", addr.getHostName(), 64000, 0, true),
         					  new Refuse("Invalid Password")};
-
-        // Send some messages to ourself
+        
+        // construct a client and join to the server
+        Peer client1 = new Client(addr.getHostName(), addr.getPort(), "Monkey", "pw");
+        client1.setDaemon(true);
+        client1.start();
+        
+        //construct another client
+        Peer client2 = new Client(addr.getHostName(), addr.getPort(), "Giraffe", "pw");
+        client2.setDaemon(true);
+        client2.start();
+        
+        // Send some messages
+        client1.send(new TextMessage("rob", "message1", "pw"));
+        client1.send(new TextMessage("rob", "message2", "pw"));
+        
+        // Send some messages
         /*for(Message message : messages) {
         	client.send(message);
         }*/
         
-        client.send(new Join("rob", "pw", client.getLocalAddress(), client.getPort()));
-        client.send(new TextMessage("rob", "message1", "pw"));
-        client.send(new TextMessage("rob", "message2", "pw"));
-        
-        
+        /*
         String mAddr = "230.0.0.1";
         int mPort = 45000;
 
@@ -77,7 +83,8 @@ public class Testing {
 
         ServerAnnouncer announcer = new ServerAnnouncer(mAddr, mPort, 1000, (Server) server);
         announcer.start();
-
+        */
+        
         Thread.sleep(3000);
 	}
 

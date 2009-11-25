@@ -7,6 +7,7 @@ public enum MessageType {
     ANNOUNCE(4),
     JOIN(5),
     REFUSE(6),
+    LEAVE(7),
     UNKNOWN(0);
 
     public int id;

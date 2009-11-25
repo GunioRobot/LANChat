@@ -13,6 +13,9 @@ public class Client extends Peer{
 		super(serverAddress, serverPort);
 		this.clientHandle = clientHandle;
 		this.password = password;
+		
+		Message join = new Join(clientHandle, password, this.getLocalAddress(), this.getPort());
+		this.send(join);
 	}
 	
 	public void hasPassword(boolean b){
@@ -39,19 +42,19 @@ public class Client extends Peer{
 	private static String msgParse(Message message){
 		//TODO: format msg properly
 		ChannelUpdate m = (ChannelUpdate)message;
-		String s = (m.date + " " + m.clientHandle + " " + m.message);
+		String s = "\n[" + Time.time() + "] " + m.clientHandle + ":  '" + m.message + "'\n";
 		return s;
 	}
 	
 	private static void ClientDisplay(String message){
 		//TODO: GUI display msg in client window
-		System.out.println(message);
+		//System.out.println(message);
 	}
 	
 	@Override
 	protected void handleMessage(Message message, InetSocketAddress source) {
-		
-		System.out.println("[Client] Received a " + message.getType() + " from " + source);
+
+		super.handleMessage(message, source);
 		
         switch(message.getType()) {
 	        case TEXT_MESSAGE:
@@ -75,4 +78,8 @@ public class Client extends Peer{
         }
 	}
 
+	@Override
+	public String getPeerName() {
+		return this.clientHandle;
+	}
 }
