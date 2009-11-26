@@ -6,14 +6,15 @@ import java.net.SocketAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
 
+import peer.Client;
+import peer.Peer;
+import peer.Server;
+
 import networking.Announce;
 import networking.ChannelUpdate;
-import networking.Client;
 import networking.Join;
 import networking.Message;
-import networking.Peer;
 import networking.Refuse;
-import networking.Server;
 import networking.ServerAnnouncer;
 import networking.ServerFinder;
 import networking.TextMessage;
@@ -42,7 +43,7 @@ public class Testing {
 		InetSocketAddress addr = new InetSocketAddress(54000);
 		
 		// Setup a server
-		Peer server = new Server(addr.getPort(), "Server1", "pw");
+		Peer server = new peer.Server(addr.getPort(), "server1", "pw", "mr server");
 		server.setDaemon(true);
 		server.start();
         
@@ -51,7 +52,7 @@ public class Testing {
         					  new TextMessage("will", "message2", "password"),
         					  new ChannelUpdate("rob", "message2", new Date()),
         					  new Announce("server1", addr.getHostName(), 64000, 0, true),
-        					  new Refuse("Invalid Password")};
+        					  new Refuse("invalid password")};
         
         // construct a client and join to the server
         Peer client1 = new Client(addr.getHostName(), addr.getPort(), "Monkey", "pw");
@@ -72,7 +73,7 @@ public class Testing {
         	client.send(message);
         }*/
         
-        /*
+        
         String mAddr = "230.0.0.1";
         int mPort = 45000;
 
@@ -83,7 +84,7 @@ public class Testing {
 
         ServerAnnouncer announcer = new ServerAnnouncer(mAddr, mPort, 1000, (Server) server);
         announcer.start();
-        */
+        
         
         Thread.sleep(3000);
 	}
