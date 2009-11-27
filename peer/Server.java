@@ -1,5 +1,7 @@
-
 package peer;
+
+import gui.ServerWindow;
+import gui.CreateServerWindow;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -9,6 +11,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import networking.Join;
+import networking.Leave;
 import networking.Message;
 import networking.Refuse;
 import networking.TextMessage;
@@ -22,20 +25,21 @@ public class Server extends Peer{
     protected String password;
     public boolean needsPassword;
     private String clientHandle;
-    //private ServerWindow window;
+    private ServerWindow window;
     
     //Constructor
     public Server(int serverPort, String serverName, String password, String clientHandle) throws SocketException {
     //EFFECTS: If serverPort is in use throw SocketException
     //            else creates a new server on localhostaddress:serverPort called serverName with password instantiates an empty clientList.
         super(serverPort);
-        //window = new ServerWindow(this);
-        clientList = new ArrayList<ClientInfo>();
+        window = new ServerWindow(this);
+        clientList = new ArrayList<ClientInfo>(1);
         this.serverPort=serverPort;
         this.serverName=serverName;
         this.password=password;
         needsPassword=password=="";
         this.clientHandle=clientHandle;
+        clientUpdate();
     }
     
     public String getClientHandle(){
@@ -69,11 +73,11 @@ public class Server extends Peer{
     
     public void clientUpdate(){
         //TODO create ChannelStatus using generate ClientHandle, call window.updategui()
-        //ChannelStatus m = new ChannelStatus();
-        //m.clientList=generateClientHandles();
-        //send(m);
-        //window.updateUserList(generateClientHandles());
-        System.out.println("[clientUpdate]");
+       // ChannelStatus m = new ChannelStatus();
+       // m.clientList=generateClientHandles();
+       // send(m);
+        window.updateUserList(generateClientHandles());
+        //System.out.println("[clientUpdate]");
     }
     
     public Vector<String> generateClientHandles(){
@@ -121,13 +125,14 @@ public class Server extends Peer{
     
     public void display(String message){
         //TODO: send formatted msg to display
-        System.out.println(message);
+        //System.out.println(message);
     }
-    
-    
     
     @Override
     protected void handleMessage(Message message, InetSocketAddress source) {
+    	
+    	super.handleMessage(message, source);
+    	
         switch(message.getType()) {
             case TEXT_MESSAGE:
                 try{
@@ -136,17 +141,14 @@ public class Server extends Peer{
                         receive(message);
                         clientUpdate();
                     }
-                    else { 
-                        //TODO: handle incorrect password
-                    }
                 } catch(IOException e){
-                    
+                	System.out.println(e);
                 }
                 break;
             case CHANNEL_UPDATE:
                 break;
             //case CHANNEL_STATUS:
-                //break;
+               //break;
             case ANNOUNCE:
                 break;
             case JOIN:
@@ -158,21 +160,20 @@ public class Server extends Peer{
                 }
                 else{
                     try {
-                        super.sendTo(new Refuse("Invalid Password"), new InetSocketAddress(m.clientAddress, m.clientPort));
+                        sendTo(new Refuse("Invalid Password"), new InetSocketAddress(m.clientAddress, m.clientPort));
                     } catch (IOException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }     
                 }
                 break;
-            /*case LEAVE:
-                Leave m = (Leave)message;
-                if(m.password.equals(this.password)){
-                    removeClient(new ClientInfo(m.clientHandle, m.clientAddress, m.clientPort) );
+            case LEAVE:
+                Leave n = (Leave)message;
+                if(n.password.equals(this.password)){
+                    removeClient(new ClientInfo(n.clientHandle, n.clientAddress, n.clientPort) );
                     clientUpdate();
                     System.out.println("clients: " + getNumMembers());
                 }
-                break;*/
+                break;
             case REFUSE:
                 break;
             default:
@@ -180,5 +181,10 @@ public class Server extends Peer{
         }
 
     }
+    
+	@Override
+	public String getPeerName() {
+		return this.serverName;
+	}
 
 }

@@ -19,6 +19,7 @@ public class ServerWindow extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
 	/** Creates new form ServerWindow */
     public ServerWindow(Thread serverT) {
+    	System.out.println("Create Server");
     	this.server = serverT;
         initComponents();
     }
@@ -169,7 +170,7 @@ public class ServerWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify                     
-    private Vector<String> users;
+    private Vector<String> users = new Vector<String>(1);
     private String userName;
     private javax.swing.JButton SendButton;
     private javax.swing.JTextPane TextDisplay;

@@ -1,10 +1,13 @@
 package peer;
 
+import gui.ClientWindow;
+import gui.PasswordException;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
 import networking.ChannelUpdate;
+import networking.Join;
 import networking.Message;
 import networking.MessageType;
 import networking.TextMessage;
@@ -15,13 +18,16 @@ public class Client extends Peer{
     private String clientHandle;
     private String password;
     boolean hasPassword;
-    //private ClientWindow window;
+    private ClientWindow window;
     
     public Client(String serverAddress, int serverPort, String clientHandle, String password) throws IOException{
         super(serverAddress, serverPort);
-        //window = new ClientWindow(this);
+        window = new ClientWindow(this);
         this.clientHandle = clientHandle;
         this.password = password;
+        
+        Message join = new Join(clientHandle, password, this.getLocalAddress(), this.getPort());
+		this.send(join);
     }
     
     public String getClientHandle(){
@@ -54,12 +60,14 @@ public class Client extends Peer{
     
     private static void ClientDisplay(String message){
         //TODO: GUI display msg in client window
-        System.out.println(message);
+        //System.out.println(message);
     }
     
     @Override
     protected void handleMessage(Message message, InetSocketAddress source) {
-        System.out.println("Peer: received a " + message.getType());
+    	
+    	super.handleMessage(message, source);
+
         switch(message.getType()) {
             case TEXT_MESSAGE:
                 break;
@@ -67,21 +75,21 @@ public class Client extends Peer{
                 try{
                     receive(message);
                 } catch(Exception e){
-                    
+                	System.out.println(e);
                 }
                 break;
           //case CHANNEL_STATUS:
-                //ChannelUpdate m = (ChannelUpdate) message;
+                //ChannelStatus m = (ChannelStatus) message;
                 //window.updateUserList(m.clientList);
                 //break;
             case ANNOUNCE:
                 break;
             case JOIN:
                 break;
-            //case LEAVE:
-                //break;
+            case LEAVE:
+                break;
             case REFUSE:
-                //window.dispose();
+                window.dispose();
                 //throw new PasswordException();
                 break;
             default:
@@ -89,4 +97,8 @@ public class Client extends Peer{
         }
     }
 
+	@Override
+	public String getPeerName() {
+		return this.clientHandle;
+	}
 }

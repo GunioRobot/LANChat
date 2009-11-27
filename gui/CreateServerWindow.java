@@ -13,8 +13,13 @@ import peer.Server;
  */
 public class CreateServerWindow extends javax.swing.JFrame {
 
-    /** Creates new form CreateServerWindow */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/** Creates new form CreateServerWindow */
     public CreateServerWindow() {
+    	System.out.println("Create");
         initComponents();
     }
 
@@ -129,7 +134,7 @@ public class CreateServerWindow extends javax.swing.JFrame {
     private void createrServerButtonMouseReleased(java.awt.event.MouseEvent evt) throws SocketException {                                                  
         //check condition if successfully created then create ServerWindow
     	// TODO: add actual client handle
-        Server s = new Server(4500,serverNameField.getText(), "client handle for server",passwordField.getText());
+        Server s = new Server(45000,serverNameField.getText(), "client handle for server",passwordField.getText());
         s.start();
         dispose();
     }                                                 

@@ -43,7 +43,8 @@ public class Testing {
 		InetSocketAddress addr = new InetSocketAddress(54000);
 		
 		// Setup a server
-		Peer server = new peer.Server(addr.getPort(), "server1", "pw", "mr server");
+		//Peer server = new peer.Server(addr.getPort(), "server1", "pw", "mr server");
+		Peer server = new peer.Server(56000, "server1", "pw", "mr server");
 		server.setDaemon(true);
 		server.start();
         
@@ -55,7 +56,8 @@ public class Testing {
         					  new Refuse("invalid password")};
         
         // construct a client and join to the server
-        Peer client1 = new Client(addr.getHostName(), addr.getPort(), "Monkey", "pw");
+        //Peer client1 = new Client(addr.getHostName(), addr.getPort(), "Monkey", "pw");
+        Peer client1 = new Client(addr.getHostName(), 56000, "Monkey", "pw");
         client1.setDaemon(true);
         client1.start();
         

@@ -176,7 +176,7 @@ public class ClientWindow extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private Vector<String> users;
+    private Vector<String> users = new Vector<String>(1);
     private Window a = new Window(this);
     // End of variables declaration                   
 

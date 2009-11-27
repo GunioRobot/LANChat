@@ -1,4 +1,4 @@
-package networking;
+package peer;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
