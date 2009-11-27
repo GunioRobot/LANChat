@@ -7,9 +7,11 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Vector;
 
+import networking.ChannelUpdate;
 import networking.Join;
 import networking.Leave;
 import networking.Message;
@@ -33,6 +35,7 @@ public class Server extends Peer{
     //            else creates a new server on localhostaddress:serverPort called serverName with password instantiates an empty clientList.
         super(serverPort);
         window = new ServerWindow(this);
+        window.setVisible(true);
         clientList = new ArrayList<ClientInfo>(1);
         this.serverPort=serverPort;
         this.serverName=serverName;
@@ -40,6 +43,7 @@ public class Server extends Peer{
         needsPassword=password=="";
         this.clientHandle=clientHandle;
         clientUpdate();
+        System.out.println(getPeerName());
     }
     
     public String getClientHandle(){
@@ -99,13 +103,24 @@ public class Server extends Peer{
     }
 
 //Server Send/Recv Stuff
+    public void send(String message){
+    	TextMessage m = new TextMessage(clientHandle, message, "");
+    	try {
+			send(m);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
     @Override
     public void send(Message message) throws IOException{
     //REQUIRES: message is TEXT_MESSAGE
     //EFFECTS: sends message to all clients
+    	TextMessage m = (TextMessage)message;
+    	ChannelUpdate n = new ChannelUpdate(m.clientHandle, m.message, new Date());
         Iterator<ClientInfo> itr = clientList.iterator();
         while( itr.hasNext() ){
-            sendTo(message, itr.next().clientSocket);
+            sendTo(n, itr.next().clientSocket);
         }        
     }
     
@@ -125,6 +140,7 @@ public class Server extends Peer{
     
     public void display(String message){
         //TODO: send formatted msg to display
+    	window.setString(message);
         //System.out.println(message);
     }
     

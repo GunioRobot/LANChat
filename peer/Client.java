@@ -23,6 +23,7 @@ public class Client extends Peer{
     public Client(String serverAddress, int serverPort, String clientHandle, String password) throws IOException{
         super(serverAddress, serverPort);
         window = new ClientWindow(this);
+        window.setVisible(true);
         this.clientHandle = clientHandle;
         this.password = password;
         
@@ -47,7 +48,7 @@ public class Client extends Peer{
     public static void receive(Message message){
         if(message.getType()==MessageType.CHANNEL_UPDATE){
             String s = msgParse(message);
-            ClientDisplay(s);
+            display(s);
         }
     }
 
@@ -58,8 +59,9 @@ public class Client extends Peer{
         return s;
     }
     
-    private static void ClientDisplay(String message){
+    private static void display(String message){
         //TODO: GUI display msg in client window
+    	window.setString(message);
         //System.out.println(message);
     }
     
