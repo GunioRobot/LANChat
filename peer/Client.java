@@ -17,13 +17,19 @@ public class Client extends Peer{
 
     private String clientHandle;
     private String password;
-    boolean hasPassword;
+    private boolean hasPassword;
     private ClientWindow window;
     
+    //Constructor
     public Client(String serverAddress, int serverPort, String clientHandle, String password) throws IOException{
+	//EFFECTS: If serverPort is in use throw SocketException
+    //         else initialize clientChat gui and instantiate client with serverAddress, serverPort, clientHandle, and password
+    //			send join message to server
         super(serverAddress, serverPort);
+        
         window = new ClientWindow(this);
         window.setVisible(true);
+        
         this.clientHandle = clientHandle;
         this.password = password;
         
@@ -31,38 +37,48 @@ public class Client extends Peer{
 		this.send(join);
     }
     
-    public String getClientHandle(){
-        return clientHandle;
-    }
-    
+//Mutator
     public void hasPassword(boolean b){
+    //EFFECTS: set hasPassword to b
         hasPassword = b;
     }
     
+//Observer
+    public String getClientHandle(){
+    //EFFECTS: returns client handle
+        return clientHandle;
+    }
+    
+    public boolean getHasPassword(){
+    //EFFECTS: returns hasPassword
+    	return hasPassword;
+    }
+    
+//Client Send/Recv
     public void send(String message) throws IOException{
+    //EFFECTS: Creates a new TextMessage m with message and sends m to server
         System.out.println("Client");
         Message m = new TextMessage(clientHandle, message, password);
         send(m);
     }
     
-    public static void receive(Message message){
-        if(message.getType()==MessageType.CHANNEL_UPDATE){
-            String s = msgParse(message);
-            display(s);
-        }
+    private static void receive(Message message){
+    //REQUIRES: message is CHANNEL_UPDATE
+    //EFFECTS: parse message into string and update client chat gui
+        String s = msgParse(message);
+        display(s);
     }
 
     private static String msgParse(Message message){
-        //TODO: format msg properly
+    //EFFECTS: returns a string of data + " " + clientHandle + " " + message
         ChannelUpdate m = (ChannelUpdate)message;
         String s = (m.date + " " + m.clientHandle + " " + m.message);
         return s;
     }
     
     private static void display(String message){
-        //TODO: GUI display msg in client window
+    //EFFECTS: updates client chat gui with message
     	window.setString(message);
-        //System.out.println(message);
     }
     
     @Override
@@ -101,6 +117,7 @@ public class Client extends Peer{
 
 	@Override
 	public String getPeerName() {
+	//EFFECTS: returns client handle
 		return this.clientHandle;
 	}
 }

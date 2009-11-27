@@ -30,7 +30,7 @@ public class ServerAnnouncer extends Thread {
     public void run() {
         while(!this.isInterrupted()) {
             try {
-                Announce announce = new Announce(server.serverName, server.getLocalAddress(), server.serverPort, server.getNumMembers(), server.needsPassword);
+                Announce announce = new Announce(server.getServerName(), server.getLocalAddress(), server.getServerPort(), server.getNumMembers(), server.needsPassword);
                 byte[] data = announce.getBytes();
                 DatagramPacket packet = new DatagramPacket(data, data.length, address);
                 System.out.println("ServerAnnouncer: sending announce to " + packet.getAddress().getHostName() + ":" + packet.getPort());

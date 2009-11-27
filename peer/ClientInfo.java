@@ -4,6 +4,7 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
 public class ClientInfo {
+	
     //DataType
     public String clientHandle;
     public String clientAddress;
@@ -11,7 +12,11 @@ public class ClientInfo {
     public InetSocketAddress clientSocket;
     public boolean hasFile;
     
+    //Constructor
     public ClientInfo(String clientHandle, String clientAddress, int clientPort){
+    //EFFECTS: creates a new ClientInfo with clientHandle, clientAddress, and clientPort in its field.
+    //			set clientSocket as clientAddress + clientPort.
+    //			set hasFile to false.
         super();
         this.clientHandle = clientHandle;
         this.clientAddress = clientAddress;
@@ -21,9 +26,11 @@ public class ClientInfo {
     }
     
     public boolean same(ClientInfo other){
+    //EFFECTS: returns true if this.clientSocket does not equal other.clientSocket else return false
         if(this.clientSocket==other.clientSocket
            ) return false;
         return true;
     }
+
 }
 
