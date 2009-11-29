@@ -62,21 +62,21 @@ public class Client extends Peer{
         send(m);
     }
     
-    private static void receive(Message message){
+    private void receive(Message message){
     //REQUIRES: message is CHANNEL_UPDATE
     //EFFECTS: parse message into string and update client chat gui
         String s = msgParse(message);
         display(s);
     }
 
-    private static String msgParse(Message message){
+    private String msgParse(Message message){
     //EFFECTS: returns a string of data + " " + clientHandle + " " + message
         ChannelUpdate m = (ChannelUpdate)message;
         String s = (m.date + " " + m.clientHandle + " " + m.message);
         return s;
     }
     
-    private static void display(String message){
+    private void display(String message){
     //EFFECTS: updates client chat gui with message
     	window.setString(message);
     }

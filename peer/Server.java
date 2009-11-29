@@ -152,7 +152,7 @@ public class Server extends Peer{
         display(s);
     }
     
-    private static String msgParse(Message message){
+    private String msgParse(Message message){
     //EFFECTS: takes message and returns a string with Time.time() + " " + clientHandle + " " + message
         TextMessage m = (TextMessage)message;
         String s = (Time.time() + " " + m.clientHandle + " " + m.message);
