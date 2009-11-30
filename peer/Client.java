@@ -34,7 +34,8 @@ public class Client extends Peer{
         this.password = password;
         
         Message join = new Join(clientHandle, password, this.getLocalAddress(), this.getPort());
-		this.send(join);
+		
+        this.send(join);
     }
     
 //Mutator
@@ -62,7 +63,7 @@ public class Client extends Peer{
         send(m);
     }
     
-    private static void receive(Message message){
+    private void receive(Message message){
     //REQUIRES: message is CHANNEL_UPDATE
     //EFFECTS: parse message into string and update client chat gui
         String s = msgParse(message);
@@ -76,9 +77,8 @@ public class Client extends Peer{
         return s;
     }
     
-    private static void display(String message){
+    private void display(String message){
     //EFFECTS: updates client chat gui with message
-    	window.setString(message);
     }
     
     @Override

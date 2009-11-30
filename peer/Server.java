@@ -1,11 +1,9 @@
 package peer;
 
 import gui.ServerWindow;
-import gui.CreateServerWindow;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -16,39 +14,46 @@ import networking.Join;
 import networking.Leave;
 import networking.Message;
 import networking.Refuse;
+import networking.ServerAnnouncer;
 import networking.TextMessage;
 
 public class Server extends Peer{
-//OVERVIEW: Server receives messages from all clients and sends messages back to all client
+//OVERVIEW: Server receives messages from clients and sends messages back to all clients
     
     private ArrayList<ClientInfo> clientList;
     
-    private int serverPort;
     private String serverName;
     protected String password;
     private String clientHandle;
     public boolean needsPassword;
     
+    private ServerAnnouncer announcer;
+    
     private ServerWindow window;
     
 //Constructor
-    public Server(int serverPort, String serverName, String password, String clientHandle) throws SocketException {
+    public Server(String serverName, String password, String clientHandle) throws IOException {
     //EFFECTS: If serverPort is in use throw SocketException
     //         else initialize serverChat gui and instantiate server with serverPort, serverName, password, clientHandle, and empty clientList
     //			set needsPassword to password.isEmpty()
-        super(serverPort);
+        super();
         
         window = new ServerWindow(this);
         window.setVisible(true);
         
-        clientList = new ArrayList<ClientInfo>(1);
-        this.serverPort=serverPort;
+        clientList = new ArrayList<ClientInfo>();
         this.serverName=serverName;
         this.password=password;
         needsPassword=password.isEmpty();
         this.clientHandle=clientHandle;
         
+        this.announcer = new ServerAnnouncer(this);
+        this.announcer.start();
+        
+        //Add ourselves to the client list and update
+        addClient(new ClientInfo(clientHandle, this.getLocalAddress(), this.getPort()));
         clientUpdate();
+        System.out.println("Server started on port " + this.getPort());
     }
     
 //Mutators
@@ -57,12 +62,11 @@ public class Server extends Peer{
     //         if client has same handle or same socket address as existing client return false
     //			else add client to clientList and return true
         System.out.println(client.clientHandle + " " + client.clientAddress + " " + client.clientPort);
-        for(int i=0; i<clientList.size(); i++){
-            if(clientList.get(i).clientHandle.equals(client.clientHandle) ||
-                clientList.get(i).same(client)){
-                System.out.println("Username already used");
-                return false;
-            }
+        for(ClientInfo knownClient : clientList) {
+        	if(knownClient.clientHandle.equals(client.clientHandle) || knownClient.same(client)){
+                    System.out.println("Username already used");
+                    return false;
+                }
         }
         clientList.add(client);
         return true;
@@ -100,7 +104,7 @@ public class Server extends Peer{
     
     public int getServerPort(){
     //EFFECTS: return server port
-    	return serverPort;
+    	return serverAddress.getPort();
     }
     
 //Helper
@@ -161,7 +165,6 @@ public class Server extends Peer{
     
     public void display(String message){
     //EFFECTS: updates gui with message
-    	window.setString(message);
     }
     
     @Override

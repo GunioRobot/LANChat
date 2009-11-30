@@ -35,7 +35,7 @@ public class Testing {
 
 
 
-	public static void main(String[] args) throws InterruptedException, IOException {
+	public static void test(String[] args) throws InterruptedException, IOException {
 
 		InetAddress addr2  = Inet4Address.getLocalHost();
 		System.out.println(addr2.getHostAddress());
@@ -44,7 +44,7 @@ public class Testing {
 		
 		// Setup a server
 		//Peer server = new peer.Server(addr.getPort(), "server1", "pw", "mr server");
-		Peer server = new peer.Server(56000, "server1", "pw", "mr server");
+		Peer server = new peer.Server("server1", "pw", "mr server");
 		server.setDaemon(true);
 		server.start();
         

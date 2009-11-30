@@ -161,6 +161,7 @@ public class ClientWindow extends javax.swing.JFrame {
     	this.users = users;
     	UserLisT.setListData(users);
     }
+
     /**
     * @param args the command line arguments
     */
@@ -179,5 +180,6 @@ public class ClientWindow extends javax.swing.JFrame {
     private Vector<String> users = new Vector<String>(1);
     private Window a = new Window(this);
     // End of variables declaration                   
+
 
 }

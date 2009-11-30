@@ -169,6 +169,7 @@ public class ServerWindow extends javax.swing.JFrame {
     	UserLisT.setListData(users);
     }
 
+
     // Variables declaration - do not modify                     
     private Vector<String> users = new Vector<String>(1);
     private String userName;

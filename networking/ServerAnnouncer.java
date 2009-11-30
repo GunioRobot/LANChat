@@ -10,12 +10,25 @@ import peer.Server;
 
 public class ServerAnnouncer extends Thread {
 
-    MulticastSocket socket;
-    InetSocketAddress address;
-    int port;
-    int delay;
-    Server server;
-
+    private MulticastSocket socket;
+    private InetSocketAddress address;
+    private int delay;
+    private Server server;
+    
+    public static String defaultAddress = "230.0.0.1";
+    public static int defaultPort = 45000;
+    public int defaultDelay = 10000;
+    
+    public ServerAnnouncer(Server server) throws IOException {
+        socket = new MulticastSocket(defaultPort);
+        socket.joinGroup(Inet4Address.getByName(defaultAddress));
+        socket.setTimeToLive(32);
+        this.setDaemon(true);
+        this.address = new InetSocketAddress(defaultAddress, defaultPort);
+        this.server = server;
+        this.delay = defaultDelay;
+    }
+    
     public ServerAnnouncer(String multicastAddress, int announcePort, int delay, Server server) throws IOException {
         socket = new MulticastSocket(announcePort);
         socket.joinGroup(Inet4Address.getByName(multicastAddress));

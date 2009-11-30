@@ -30,12 +30,12 @@ public class StartupWindow extends javax.swing.JFrame implements ServerFinder.Se
      * @throws IOException */
     public StartupWindow() throws IOException {
         initComponents();
-      //  initOthers();
+        initOthers();
     }
 
     private void initOthers() throws IOException {
     	
-		ServerFinder finder = new ServerFinder("230.0.0.1", 45000);
+		ServerFinder finder = new ServerFinder(ServerAnnouncer.defaultAddress, ServerAnnouncer.defaultPort);
 		finder.addServerListener((ServerFinder.ServerListener) this);
 		finder.start();
 	}
@@ -228,17 +228,15 @@ public class StartupWindow extends javax.swing.JFrame implements ServerFinder.Se
 	public void serverFound(SocketAddress address, String serverName,
 			int numMembers, boolean needsPassword) {
 		ServerVariable sv = new ServerVariable(address,serverName,numMembers, needsPassword);
-		Iterator<ServerVariable> it = svList.iterator();
-		while(it.hasNext()){
-			ServerVariable temp = it.next();
-			if(((InetSocketAddress)sv.getAddress()).getAddress().equals(((InetSocketAddress)temp.getAddress()).getAddress())){
-				temp.setNumMembers(sv.getNumMembers());	
-				break;
+		
+		for(ServerVariable server : svList) {
+			if(server.isSameServer(sv)) {
+				server.setNumMembers(numMembers);
+				return;
 			}
 		}
 		svList.add(sv);
 		ServerList.setListData(svList);
-		
 	}
 
 }

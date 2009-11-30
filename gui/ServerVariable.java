@@ -1,5 +1,6 @@
 package gui;
 
+import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
 
@@ -37,6 +38,15 @@ public class ServerVariable {
 	
 	public boolean isPasswordRequired(){
 		return this.needsPassword;
+	}
+	
+	public boolean isSameServer(ServerVariable other) {
+		// REQUIRES: other is not null
+		// EFFECTS: returns true if other represents a server at the same address
+		// and port as this server
+		InetSocketAddress addr1 = (InetSocketAddress)address;
+		InetSocketAddress addr2 = (InetSocketAddress)other.address;
+		return (addr1.getAddress().equals(addr2.getAddress())) && (addr1.getPort() == addr2.getPort());
 	}
 	
 	public String toString(){

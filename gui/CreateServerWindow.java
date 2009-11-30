@@ -1,5 +1,6 @@
 package gui;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketException;
 
@@ -49,7 +50,7 @@ public class CreateServerWindow extends javax.swing.JFrame {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 try {
 					createrServerButtonMouseReleased(evt);
-				} catch (SocketException e) {
+				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -131,10 +132,10 @@ public class CreateServerWindow extends javax.swing.JFrame {
         }
     }                                              
 
-    private void createrServerButtonMouseReleased(java.awt.event.MouseEvent evt) throws SocketException {                                                  
+    private void createrServerButtonMouseReleased(java.awt.event.MouseEvent evt) throws IOException {                                                  
         //check condition if successfully created then create ServerWindow
     	// TODO: add actual client handle
-        Server s = new Server(45000,serverNameField.getText(), "client handle for server",passwordField.getText());
+        Server s = new Server(serverNameField.getText(), "client handle for server",passwordField.getText());
         s.start();
         dispose();
     }                                                 

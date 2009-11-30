@@ -19,9 +19,17 @@ public abstract class Peer extends Thread {
 	private DatagramSocket socket;
 
     // Address of the server
-    private InetSocketAddress serverAddress;
+    public InetSocketAddress serverAddress;
 
     // constructors
+    
+    public Peer() throws SocketException {
+        // EFFECTS: Initializes this with a new socket and sets the server address
+        // to it's own address
+        socket = new DatagramSocket();
+        this.serverAddress = (InetSocketAddress)socket.getLocalSocketAddress();
+    }
+    
 	public Peer(String serverAddress, int serverPort)
 		throws IOException {
         // REQUIRES: serverAddress is a valid host on the network, and serverPort
@@ -43,21 +51,14 @@ public abstract class Peer extends Thread {
 		return socket.getLocalPort();
 	}
 
-    public Peer(int serverPort) throws SocketException {
-        // REQUIRES: serverPort is a valid UDP port
-        // EFFECTS: Initializes this with a new socket and sets the server address
-        // to it's own address
-        socket = new DatagramSocket(serverPort);
-        this.serverAddress = new InetSocketAddress("192.168.111.102", serverPort);
-        //this.serverAddress = (InetSocketAddress)socket.getLocalSocketAddress();
-    }
+
 
 	public void send(Message message)
 		throws IOException {
         // REQUIRES: data is not null
         // EFFECTS: Encapsulates data in a datagram and sends to the server
-        System.out.println("[" + getPeerName() + "] Sending " + message.getType() + " from port " + socket.getLocalPort());
-		this.sendTo(message, this.serverAddress);
+        System.out.println("[" + getPeerName() + "] Sending " + message.getType() + " from port " + socket.getLocalPort() + " to " + this.serverAddress);
+        this.sendTo(message, this.serverAddress);
 	}
 	
 	public void sendTo(Message message, SocketAddress destination)
