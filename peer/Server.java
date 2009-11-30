@@ -33,7 +33,7 @@ public class Server extends Peer{
     private ServerWindow window;
     
 //Constructor
-    public Server(String serverName, String password, String clientHandle) throws IOException {
+    public Server(String serverName, String password, boolean needsPassword, String clientHandle) throws IOException {
     //EFFECTS: If serverPort is in use throw SocketException
     //         else initialize serverChat gui and instantiate server with serverPort, serverName, password, clientHandle, and empty clientList
     //			set needsPassword to password.isEmpty()
@@ -45,7 +45,12 @@ public class Server extends Peer{
         clientList = new ArrayList<ClientInfo>();
         this.serverName=serverName;
         this.password=password;
-        needsPassword=password.isEmpty();
+        this.needsPassword=needsPassword;
+        if(needsPassword) {
+        	System.out.println("There is a password");
+        } else {
+        	System.out.println("No Password!!");
+        }
         this.clientHandle=clientHandle;
         
         this.announcer = new ServerAnnouncer(this);
@@ -95,7 +100,7 @@ public class Server extends Peer{
         return clientHandle;
     }
     
-    public synchronized int getNumMembers(){
+    public synchronized int getNumMembers() {
     //EFFECTS: return the number of members in clientList
         return clientList.size();
 	}

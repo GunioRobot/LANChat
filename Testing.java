@@ -44,7 +44,7 @@ public class Testing {
 		
 		// Setup a server
 		//Peer server = new peer.Server(addr.getPort(), "server1", "pw", "mr server");
-		Peer server = new peer.Server("server1", "pw", "mr server");
+		Peer server = new peer.Server("server1", "pw", true, "mr server");
 		server.setDaemon(true);
 		server.start();
         

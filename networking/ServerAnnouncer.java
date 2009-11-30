@@ -17,7 +17,7 @@ public class ServerAnnouncer extends Thread {
     
     public static String defaultAddress = "230.0.0.1";
     public static int defaultPort = 45000;
-    public int defaultDelay = 10000;
+    public int defaultDelay = 1000;
     
     public ServerAnnouncer(Server server) throws IOException {
         socket = new MulticastSocket(defaultPort);

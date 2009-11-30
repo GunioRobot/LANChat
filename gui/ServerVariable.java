@@ -50,9 +50,9 @@ public class ServerVariable {
 	}
 	
 	public String toString(){
-		String s = this.serverName + ", Users:" + this.numMembers;
-		if(this.needsPassword = true){
-			s += ", Require Password";
+		String s = this.serverName + " [" + this.numMembers + " members]";
+		if(this.needsPassword){
+			s += " (Requires Password)";
 		}
 		return s;
 	}

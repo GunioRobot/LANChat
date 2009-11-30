@@ -55,7 +55,6 @@ public class ServerWindow extends javax.swing.JFrame {
 		public void windowClosed(WindowEvent arg0) {
 			// Kill the client Server here
 			server.interrupt();
-			System.out.println("Sever is Closed");
 		}
 
 		@Override

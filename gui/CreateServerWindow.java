@@ -137,8 +137,7 @@ public class CreateServerWindow extends javax.swing.JFrame {
 
     private void createrServerButtonMouseReleased(java.awt.event.MouseEvent evt) throws IOException {                                                  
         //check condition if successfully created then create ServerWindow
-    	// TODO: add actual client handle
-        Server s = new Server(serverNameField.getText(), passwordField.getText(), userName);
+        Server s = new Server(serverNameField.getText(), passwordField.getText(), passwordCheckbox.getState(), userName);
         s.start();
         dispose();
     }                                                 

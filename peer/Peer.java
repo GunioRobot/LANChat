@@ -10,8 +10,10 @@ import java.net.SocketAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import networking.Join;
 import networking.Message;
 import networking.MessageParser;
+import networking.MessageType;
 
 public abstract class Peer extends Thread {
     // OVERVIEW: A peer represents a client or server on the network. It can 
@@ -90,7 +92,7 @@ public abstract class Peer extends Thread {
         DatagramPacket packet;
         Message message;
         
-        while(true) {
+        while(!this.isInterrupted()) {
             try {
                 packet = this.receiveData();
 
@@ -110,6 +112,7 @@ public abstract class Peer extends Thread {
 
             handleMessage(message, (InetSocketAddress)packet.getSocketAddress());
         }
+		System.out.println("[" + getPeerName() + "] shut down");
     }
 	
 	public SocketAddress getLocalSocketAddress() {
@@ -118,8 +121,13 @@ public abstract class Peer extends Thread {
 
     protected void handleMessage(Message message, InetSocketAddress source) {
 
+    	// Print out type of packet
 		System.out.println("[" + getPeerName() + "] Received a " + message.getType());
 
+		// Fix IP address of JOIN messages since some machines don't know their own address...
+		if(message.getType() == MessageType.JOIN) {
+			((Join)message).clientAddress = source.getHostName();
+		}
     }
     
     public String getPeerName() {

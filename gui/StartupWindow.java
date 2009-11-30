@@ -59,7 +59,7 @@ public class StartupWindow extends javax.swing.JFrame implements ServerFinder.Se
         QuitButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("LAN CHAT ");
+        setTitle("LANChat");
         setLocationByPlatform(true);
         joinServerButton.setText("Join Server");
         joinServerButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -77,9 +77,9 @@ public class StartupWindow extends javax.swing.JFrame implements ServerFinder.Se
 
         NickNameLabel.setText("NickName");
 
-        mainTitle.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        mainTitle.setFont(new java.awt.Font("Times New Roman", 1, 24));
         mainTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        mainTitle.setText("LanChat");
+        mainTitle.setText("LANChat");
         mainTitle.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
     	ServerList.setEnabled(true);
         ServerList.setListData(svList);
