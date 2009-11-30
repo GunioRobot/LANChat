@@ -4,7 +4,10 @@ import java.awt.Window;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
 import java.util.Vector;
+
+import peer.Server;
 
 
 /**
@@ -18,7 +21,7 @@ public class ServerWindow extends javax.swing.JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	/** Creates new form ServerWindow */
-    public ServerWindow(Thread serverT) {
+    public ServerWindow(Server serverT) {
     	System.out.println("Create Server");
     	this.server = serverT;
         initComponents();
@@ -39,8 +42,7 @@ public class ServerWindow extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         TextInputPanel = new javax.swing.JTextPane();
         jScrollPane1 = new javax.swing.JScrollPane();
-        TextDisplay = new javax.swing.JTextPane();
-        userName = "username";
+        displayText = new javax.swing.JTextPane();
         a.addWindowListener(new WindowListener(){
 
 		@Override
@@ -110,8 +112,8 @@ public class ServerWindow extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(TextInputPanel);
 
-        TextDisplay.setEditable(false);
-        jScrollPane1.setViewportView(TextDisplay);
+        displayText.setEditable(false);
+        jScrollPane1.setViewportView(displayText);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -150,8 +152,9 @@ public class ServerWindow extends javax.swing.JFrame {
 
     private void SendButtonMouseReleased(java.awt.event.MouseEvent evt) {                                         
         // Display msg from input panel to output panel
-        TextDisplay.setText(TextDisplay.getText()+ userName + " says: \n" + TextInputPanel.getText()+ "\n");
-        TextInputPanel.setText("");
+    	String text = TextInputPanel.getText();
+    	TextInputPanel.setText("");
+		server.send(text);
         
     }                                        
 
@@ -159,10 +162,15 @@ public class ServerWindow extends javax.swing.JFrame {
         // check for hotkey ALT + S
         if(evt.isAltDown() && (evt.getKeyCode() == KeyEvent.VK_S)){
         // Display msg from input panel to output panel
-        TextDisplay.setText(TextDisplay.getText()+ userName + " says: \n" + TextInputPanel.getText()+ "\n");
-        TextInputPanel.setText("");
+        	String text = TextInputPanel.getText();
+        	TextInputPanel.setText("");
+    		server.send(text);
         }
-    }                                         
+    }  
+    
+    public void addText(String text) {
+    	displayText.setText(displayText.getText() + text + "\n\n");
+    }
     
     public void updateUserList(Vector<String> users){
     	this.users = users;
@@ -172,16 +180,15 @@ public class ServerWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify                     
     private Vector<String> users = new Vector<String>(1);
-    private String userName;
     private javax.swing.JButton SendButton;
-    private javax.swing.JTextPane TextDisplay;
+    private javax.swing.JTextPane displayText;
     private javax.swing.JTextPane TextInputPanel;
     private javax.swing.JList UserLisT;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private Window a= new Window(this);
-    private Thread server;
+    private Server server;
     //private Vector[] UserList;
     // End of variables declaration                   
 

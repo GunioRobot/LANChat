@@ -6,6 +6,7 @@ import gui.PasswordException;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
+import networking.ChannelStatus;
 import networking.ChannelUpdate;
 import networking.Join;
 import networking.Message;
@@ -57,30 +58,31 @@ public class Client extends Peer{
     }
     
 //Client Send/Recv
-    public void send(String message) throws IOException{
+    public void send(String message) {
     //EFFECTS: Creates a new TextMessage m with message and sends m to server
-        System.out.println("Client");
         Message m = new TextMessage(clientHandle, message, password);
-        send(m);
+        try {
+			send(m);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
     private void receive(Message message){
     //REQUIRES: message is CHANNEL_UPDATE
     //EFFECTS: parse message into string and update client chat gui
-        String s = msgParse(message);
-        display(s);
+        String text = msgParse(message);
+        window.addText(text);
     }
 
     private String msgParse(Message message){
     //EFFECTS: returns a string of data + " " + clientHandle + " " + message
         ChannelUpdate m = (ChannelUpdate)message;
-        String s = (m.date + " " + m.clientHandle + " " + m.message);
+        String s = ("[" + m.clientHandle + "]: " + m.message);
         return s;
     }
     
-    private void display(String message){
-    //EFFECTS: updates client chat gui with message
-    }
     
     @Override
     protected void handleMessage(Message message, InetSocketAddress source) {
@@ -97,10 +99,10 @@ public class Client extends Peer{
                 	System.out.println(e);
                 }
                 break;
-          //case CHANNEL_STATUS:
-                //ChannelStatus m = (ChannelStatus) message;
-                //window.updateUserList(m.clientList);
-                //break;
+          case CHANNEL_STATUS:
+                ChannelStatus m = (ChannelStatus) message;
+                window.updateUserList(m.clientHandles);
+                break;
             case ANNOUNCE:
                 break;
             case JOIN:
@@ -109,6 +111,7 @@ public class Client extends Peer{
                 break;
             case REFUSE:
                 window.dispose();
+                this.interrupt();
                 //throw new PasswordException();
                 break;
             default:

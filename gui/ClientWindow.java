@@ -4,9 +4,12 @@ import java.awt.Window;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
+
+import peer.Client;
 
 /**
  *
@@ -15,7 +18,7 @@ import javax.swing.JOptionPane;
 public class ClientWindow extends javax.swing.JFrame {
 
     /** Creates new form ClientWindow */
-    public ClientWindow(Thread ClientT) {
+    public ClientWindow(Client ClientT) {
     	this.client = ClientT;
         initComponents();
       
@@ -33,10 +36,10 @@ public class ClientWindow extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         TextInputPanel = new javax.swing.JTextPane();
         jScrollPane3 = new javax.swing.JScrollPane();
-        UserLisT = new javax.swing.JList();
+        userList = new javax.swing.JList();
         SendButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        DisplayText = new javax.swing.JTextPane();
+        displayText = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Client Channel");
@@ -90,12 +93,12 @@ public class ClientWindow extends javax.swing.JFrame {
             }
         });
         jScrollPane2.setViewportView(TextInputPanel);
-        UserLisT.setListData(users);
-        UserLisT.setModel(new javax.swing.AbstractListModel() {
+        userList.setListData(users);
+        userList.setModel(new javax.swing.AbstractListModel() {
             public int getSize() { return users.size(); }
             public Object getElementAt(int i) { return users.get(i); }
         });
-        jScrollPane3.setViewportView(UserLisT);
+        jScrollPane3.setViewportView(userList);
 
         SendButton.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         SendButton.setText("Send");
@@ -105,8 +108,8 @@ public class ClientWindow extends javax.swing.JFrame {
             }
         });
 
-        DisplayText.setEditable(false);
-        jScrollPane1.setViewportView(DisplayText);
+        displayText.setEditable(false);
+        jScrollPane1.setViewportView(displayText);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -142,24 +145,33 @@ public class ClientWindow extends javax.swing.JFrame {
 
     private void SendButtonMouseReleased(java.awt.event.MouseEvent evt) {                                         
 
+    	/*
         //Display the msg from input panel to output panel
         DisplayText.setText(DisplayText.getText() + clientName + " says: \n" + TextInputPanel.getText() + "\n");
         TextInputPanel.setText("");
+    	*/
+    	String text = TextInputPanel.getText();
+    	TextInputPanel.setText("");
+		client.send(text);
     }                                        
 
     private void TextInputPanelKeyPressed(java.awt.event.KeyEvent evt) {                                          
          // check for hotkey ALT + S
         if(evt.isAltDown() && (evt.getKeyCode() == KeyEvent.VK_S)){
         // Display msg from input panel to output panel
-        DisplayText.setText(DisplayText.getText() + clientName + " says: \n" + TextInputPanel.getText() + "\n");
-        TextInputPanel.setText("");
+        	String text = TextInputPanel.getText();
+        	TextInputPanel.setText("");
+    		client.send(text);
         }
     }                                         
     
+    public void addText(String text) {
+    	displayText.setText(displayText.getText() + text + "\n\n");
+    }
     
     public void updateUserList(Vector<String> users){
     	this.users = users;
-    	UserLisT.setListData(users);
+    	userList.setListData(users);
     }
 
     /**
@@ -168,12 +180,11 @@ public class ClientWindow extends javax.swing.JFrame {
   
 
     // Variables declaration - do not modify                    
-    private Thread client;
-    private String clientName;
-    private javax.swing.JTextPane DisplayText;
+    private Client client;
+    private javax.swing.JTextPane displayText;
     private javax.swing.JButton SendButton;
     private javax.swing.JTextPane TextInputPanel;
-    private javax.swing.JList UserLisT;
+    private javax.swing.JList userList;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

@@ -156,19 +156,15 @@ public class Server extends Peer{
     //EFFECTS: sends message to all clients and update gui with message
     	TextMessage tm = (TextMessage)message;
         this.send(new ChannelUpdate(tm.clientHandle, tm.message, new Date()));
-        String s = msgParse(message);
-        display(s);
+        String text = msgParse(message);
+        window.addText(text);
     }
     
     private String msgParse(Message message){
     //EFFECTS: takes message and returns a string with Time.time() + " " + clientHandle + " " + message
         TextMessage m = (TextMessage)message;
-        String s = (Time.time() + " " + m.clientHandle + " " + m.message);
+        String s = ("[" + m.clientHandle + "]: " + m.message);
         return s;
-    }
-    
-    public void display(String message){
-    //EFFECTS: updates gui with message
     }
     
     @Override
@@ -191,8 +187,8 @@ public class Server extends Peer{
                 break;
             case CHANNEL_UPDATE:
                 break;
-            //case CHANNEL_STATUS:
-               //break;
+            case CHANNEL_STATUS:
+            	break;
             case ANNOUNCE:
                 break;
             case JOIN:
