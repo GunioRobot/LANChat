@@ -70,7 +70,7 @@ public class Client extends Peer{
         display(s);
     }
 
-    private static String msgParse(Message message){
+    private String msgParse(Message message){
     //EFFECTS: returns a string of data + " " + clientHandle + " " + message
         ChannelUpdate m = (ChannelUpdate)message;
         String s = (m.date + " " + m.clientHandle + " " + m.message);
