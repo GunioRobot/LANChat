@@ -140,7 +140,7 @@ public class Server extends Peer{
     public void send(String message){
     //EFFECTS: if message is null, throw NullPointerException
     //			else sends message to all clients
-    	TextMessage m = new TextMessage(clientHandle, message, "");
+    	TextMessage m = new TextMessage(clientHandle, message, password);
     	try {
 			send(m);
 		} catch (IOException e) {
@@ -154,7 +154,7 @@ public class Server extends Peer{
     //EFFECTS: sends message to all clients
     	for(ClientInfo client : clientList) {
             sendTo(message, client.clientSocketAddress);
-        }        
+        }
     }
     
     public void receive(Message message) throws IOException{
