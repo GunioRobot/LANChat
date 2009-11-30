@@ -8,6 +8,7 @@ public enum MessageType {
     JOIN(5),
     REFUSE(6),
     LEAVE(7),
+    CHANNEL_STATUS(8),
     UNKNOWN(0);
 
     public int id;

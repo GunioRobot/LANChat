@@ -8,7 +8,7 @@ public class ClientInfo {
     public String clientHandle;
     public String clientAddress;
     public int clientPort;
-    public InetSocketAddress clientSocket;
+    public InetSocketAddress clientSocketAddress;
     public boolean hasFile;
     
     //Constructor
@@ -20,13 +20,13 @@ public class ClientInfo {
         this.clientHandle = clientHandle;
         this.clientAddress = clientAddress;
         this.clientPort = clientPort;
-        clientSocket = new InetSocketAddress(clientAddress, clientPort);
+        clientSocketAddress = new InetSocketAddress(clientAddress, clientPort);
         hasFile = false;
     }
     
     public boolean same(ClientInfo other){
     //EFFECTS: returns true if this.clientSocket does not equal other.clientSocket else return false
-        if(this.clientSocket==other.clientSocket
+        if(this.clientSocketAddress==other.clientSocketAddress
            ) return false;
         return true;
     }

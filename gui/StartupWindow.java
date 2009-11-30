@@ -151,9 +151,8 @@ public class StartupWindow extends javax.swing.JFrame implements ServerFinder.Se
     private void ServerButtonMouseReleased(java.awt.event.MouseEvent evt) {                                           
         
         //display the createServerWindow
-    	CreateServerWindow cSW= new CreateServerWindow();
+    	CreateServerWindow cSW= new CreateServerWindow(NickNameTextField.getText());
     	cSW.setVisible(true);
-    
         
     }                                          
 

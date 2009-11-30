@@ -18,9 +18,12 @@ public class CreateServerWindow extends javax.swing.JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private String userName;
+	
 	/** Creates new form CreateServerWindow */
-    public CreateServerWindow() {
+    public CreateServerWindow(String userName) {
     	System.out.println("Create");
+    	this.userName = userName;
         initComponents();
     }
 
@@ -135,7 +138,7 @@ public class CreateServerWindow extends javax.swing.JFrame {
     private void createrServerButtonMouseReleased(java.awt.event.MouseEvent evt) throws IOException {                                                  
         //check condition if successfully created then create ServerWindow
     	// TODO: add actual client handle
-        Server s = new Server(serverNameField.getText(), "client handle for server",passwordField.getText());
+        Server s = new Server(serverNameField.getText(), passwordField.getText(), userName);
         s.start();
         dispose();
     }                                                 

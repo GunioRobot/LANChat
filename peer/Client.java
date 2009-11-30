@@ -33,6 +33,7 @@ public class Client extends Peer{
         this.clientHandle = clientHandle;
         this.password = password;
         
+        System.out.println("Starting client on " + this.getLocalAddress() + " : " + this.getPort());
         Message join = new Join(clientHandle, password, this.getLocalAddress(), this.getPort());
 		
         this.send(join);

@@ -28,6 +28,8 @@ public class MessageParser {
             	return new Refuse(stream);
             case LEAVE:
             	return new Leave(stream);
+            case CHANNEL_STATUS:
+            	return new ChannelStatus(stream);
         }
         return new UnknownMessage(stream);
     }

@@ -4,9 +4,11 @@ package peer;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.Inet4Address;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 
 import networking.Message;
 import networking.MessageParser;
@@ -45,9 +47,13 @@ public abstract class Peer extends Thread {
 	}
 	
 	public String getLocalAddress() {
-		return socket.getLocalAddress().getHostAddress();
+		try {
+			return Inet4Address.getLocalHost().getHostAddress();
+		} catch (UnknownHostException e) {
+			return socket.getLocalAddress().getHostAddress();
+		}
 	}
-	public int getPort(){
+	public int getPort() {
 		return socket.getLocalPort();
 	}
 

@@ -122,14 +122,9 @@ public class ClientPasswordInputWindow extends JFrame {
     }                                             
 
     private void enterButtonMouseReleased(java.awt.event.MouseEvent evt) throws IOException {                                          
-        // TODO add your handling code here:
-    	char[] temp;
-    	temp = passwordInputField.getPassword();
-    	for(int i =0 ; i < temp.length; i++){
-    	password = password.concat(Character.toString(temp[i]));
-    	}
+    	password = new String(passwordInputField.getPassword());
     	InetSocketAddress address = (InetSocketAddress) sV.getAddress();
-    	Client c = new Client(address.getHostName(),address.getPort(), this.userName,this.password);
+    	Client c = new Client(address.getHostName(),address.getPort(), userName, password);
     	c.start();
     	dispose();
        

@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Vector;
 
+import networking.ChannelStatus;
 import networking.ChannelUpdate;
 import networking.Join;
 import networking.Leave;
@@ -50,6 +51,8 @@ public class Server extends Peer{
         this.announcer = new ServerAnnouncer(this);
         this.announcer.start();
         
+        System.out.println("Starting server on " + this.getLocalAddress() + " : " + this.getPort());
+
         //Add ourselves to the client list and update
         addClient(new ClientInfo(clientHandle, this.getLocalAddress(), this.getPort()));
         clientUpdate();
@@ -61,12 +64,12 @@ public class Server extends Peer{
     //EFFECTS: If client is null throw NullPointerException
     //         if client has same handle or same socket address as existing client return false
     //			else add client to clientList and return true
-        System.out.println(client.clientHandle + " " + client.clientAddress + " " + client.clientPort);
+        System.out.println("[" + clientHandle + "] adding client: " + client.clientHandle + " " + client.clientAddress + " " + client.clientPort);
         for(ClientInfo knownClient : clientList) {
-        	if(knownClient.clientHandle.equals(client.clientHandle) || knownClient.same(client)){
-                    System.out.println("Username already used");
+        	if(knownClient.clientHandle.equals(client.clientHandle)){
+                    System.out.println("Username already taken");
                     return false;
-                }
+            }
         }
         clientList.add(client);
         return true;
@@ -92,7 +95,7 @@ public class Server extends Peer{
         return clientHandle;
     }
     
-    public int getNumMembers(){
+    public synchronized int getNumMembers(){
     //EFFECTS: return the number of members in clientList
         return clientList.size();
 	}
@@ -110,9 +113,12 @@ public class Server extends Peer{
 //Helper
     private void clientUpdate(){
     //EFFECTS: updates gui with list of clients and sends ChannelStatus to all clients with list of clients
-       // ChannelStatus m = new ChannelStatus();
-       // m.clientList=generateClientHandles();
-       // send(m);
+        ChannelStatus status = new ChannelStatus(generateClientHandles());
+        try {
+			send(status);
+		} catch (IOException e) {
+			System.out.println("[" + clientHandle + "]: Failed to send ChannelStatus");
+		}
         window.updateUserList(generateClientHandles());
     }
     
@@ -133,25 +139,23 @@ public class Server extends Peer{
     	try {
 			send(m);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.out.println("Failed sending message");
 			e.printStackTrace();
 		}
     }
     @Override
     public void send(Message message) throws IOException{
-    //REQUIRES: message is TEXT_MESSAGE
+    //REQUIRES: message is not null
     //EFFECTS: sends message to all clients
-    	TextMessage m = (TextMessage)message;
-    	ChannelUpdate n = new ChannelUpdate(m.clientHandle, m.message, new Date());
-        Iterator<ClientInfo> itr = clientList.iterator();
-        while( itr.hasNext() ){
-            sendTo(n, itr.next().clientSocket);
+    	for(ClientInfo client : clientList) {
+            sendTo(message, client.clientSocketAddress);
         }        
     }
     
     public void receive(Message message) throws IOException{
     //EFFECTS: sends message to all clients and update gui with message
-        this.send(message);
+    	TextMessage tm = (TextMessage)message;
+        this.send(new ChannelUpdate(tm.clientHandle, tm.message, new Date()));
         String s = msgParse(message);
         display(s);
     }
@@ -193,18 +197,23 @@ public class Server extends Peer{
                 break;
             case JOIN:
                 Join j = (Join)message;
+                Refuse refuse;
                 if(j.password.equals(this.password)){
-                    addClient(new ClientInfo(j.clientHandle, j.clientAddress, j.clientPort) );
-                    clientUpdate();
-                    System.out.println("clients: " + getNumMembers());
+                	if(addClient(new ClientInfo(j.clientHandle, j.clientAddress, j.clientPort))) {
+                		clientUpdate();
+                		System.out.println("clients: " + getNumMembers());
+                		break;
+                	} else {
+                		refuse = new Refuse("Username already taken");
+                	}
+                } else {
+                	refuse = new Refuse("Invalid Password");
                 }
-                else{
-                    try {
-                        sendTo(new Refuse("Invalid Password"), new InetSocketAddress(j.clientAddress, j.clientPort));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }     
-                }
+                try {
+                    sendTo(refuse, new InetSocketAddress(j.clientAddress, j.clientPort));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }     
                 break;
             case LEAVE:
                 Leave l = (Leave)message;
