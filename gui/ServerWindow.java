@@ -153,7 +153,7 @@ public class ServerWindow extends javax.swing.JFrame {
         // Display msg from input panel to output panel
     	String text = TextInputPanel.getText();
     	TextInputPanel.setText("");
-		server.send(text);
+		server.sendString(text);
         
     }                                        
 
@@ -163,7 +163,7 @@ public class ServerWindow extends javax.swing.JFrame {
         // Display msg from input panel to output panel
         	String text = TextInputPanel.getText();
         	TextInputPanel.setText("");
-    		server.send(text);
+    		server.sendString(text);
         }
     }  
     

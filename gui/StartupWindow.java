@@ -231,6 +231,7 @@ public class StartupWindow extends javax.swing.JFrame implements ServerFinder.Se
 		for(ServerVariable server : svList) {
 			if(server.isSameServer(sv)) {
 				server.setNumMembers(numMembers);
+				ServerList.setListData(svList);
 				return;
 			}
 		}

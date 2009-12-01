@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Vector;
 
 import networking.ChannelStatus;
@@ -137,7 +136,7 @@ public class Server extends Peer{
     }
 
 //Server Send/Recv
-    public void send(String message){
+    public void sendString(String message){
     //EFFECTS: if message is null, throw NullPointerException
     //			else sends message to all clients
     	TextMessage m = new TextMessage(clientHandle, message, password);
