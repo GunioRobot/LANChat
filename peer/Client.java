@@ -11,6 +11,7 @@ import networking.ChannelUpdate;
 import networking.Join;
 import networking.Message;
 import networking.MessageType;
+import networking.Refuse;
 import networking.TextMessage;
 
 public class Client extends Peer{
@@ -100,8 +101,8 @@ public class Client extends Peer{
                 }
                 break;
           case CHANNEL_STATUS:
-                ChannelStatus m = (ChannelStatus) message;
-                window.updateUserList(m.clientHandles);
+                ChannelStatus c = (ChannelStatus) message;
+                window.updateUserList(c.clientHandles);
                 break;
             case ANNOUNCE:
                 break;
@@ -110,9 +111,17 @@ public class Client extends Peer{
             case LEAVE:
                 break;
             case REFUSE:
+            	Refuse r = (Refuse) message;
+            	if(r.reason.equalsIgnoreCase("Username already taken")){
+            		window.Dialog("Username already in use");
+            	}
+            	else if(r.reason.equalsIgnoreCase("Invalid Password")){
+            		window.Dialog("Incorrect Password");
+            	}
+            	else
+            		window.Dialog("Unknown Error");
                 window.dispose();
                 this.interrupt();
-                //throw new PasswordException();
                 break;
             default:
                 System.out.println("Peer: received a " + message.getType());

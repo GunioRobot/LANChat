@@ -226,17 +226,20 @@ public class StartupWindow extends javax.swing.JFrame implements ServerFinder.Se
     
 	public void serverFound(SocketAddress address, String serverName,
 			int numMembers, boolean needsPassword) {
+		int a = ServerList.getSelectedIndex();
 		ServerVariable sv = new ServerVariable(address,serverName,numMembers, needsPassword);
 		
 		for(ServerVariable server : svList) {
 			if(server.isSameServer(sv)) {
 				server.setNumMembers(numMembers);
 				ServerList.setListData(svList);
+				ServerList.setSelectedIndex(a);
 				return;
 			}
 		}
 		svList.add(sv);
 		ServerList.setListData(svList);
+		ServerList.setSelectedIndex(a);
 	}
 
 }
