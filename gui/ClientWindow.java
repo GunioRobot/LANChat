@@ -157,13 +157,20 @@ public class ClientWindow extends javax.swing.JFrame {
 
     private void TextInputPanelKeyPressed(java.awt.event.KeyEvent evt) {                                          
          // check for hotkey ALT + S
-        if(evt.isAltDown() && (evt.getKeyCode() == KeyEvent.VK_S)){
-        // Display msg from input panel to output panel
+        if(evt.isControlDown() && (evt.getKeyCode() == KeyEvent.VK_ENTER)){
+            TextInputPanel.setText(TextInputPanel.getText()+ "\n");
+        }
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+        	// Display msg from input panel to output panel
         	String text = TextInputPanel.getText();
         	TextInputPanel.setText("");
     		client.send(text);
         }
     }                                         
+    
+    public void Dialog(String msg){
+    	JOptionPane.showMessageDialog(null, msg);
+    }
     
     public void addText(String text) {
     	displayText.setText(displayText.getText() + text + "\n\n");

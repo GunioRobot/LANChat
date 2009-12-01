@@ -7,6 +7,8 @@ import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
+
 import peer.Server;
 
 
@@ -159,12 +161,15 @@ public class ServerWindow extends javax.swing.JFrame {
 
     private void TextInputPanelKeyPressed(java.awt.event.KeyEvent evt) {                                          
         // check for hotkey ALT + S
-        if(evt.isAltDown() && (evt.getKeyCode() == KeyEvent.VK_S)){
-        // Display msg from input panel to output panel
+        if(evt.isControlDown() && (evt.getKeyCode() == KeyEvent.VK_ENTER)){
+            TextInputPanel.setText(TextInputPanel.getText()+ "\n");
+        }
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+        	// Display msg from input panel to output panel
         	String text = TextInputPanel.getText();
         	TextInputPanel.setText("");
     		server.send(text);
-        }
+    	}
     }  
     
     public void addText(String text) {
@@ -174,6 +179,10 @@ public class ServerWindow extends javax.swing.JFrame {
     public void updateUserList(Vector<String> users){
     	this.users = users;
     	UserLisT.setListData(users);
+    }
+    
+    public void Dialog(String msg){
+    	JOptionPane.showMessageDialog(null, msg);
     }
 
 
