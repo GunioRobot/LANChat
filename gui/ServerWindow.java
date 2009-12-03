@@ -164,16 +164,20 @@ public class ServerWindow extends javax.swing.JFrame {
         if(evt.isControlDown() && (evt.getKeyCode() == KeyEvent.VK_ENTER)){
             TextInputPanel.setText(TextInputPanel.getText()+ "\n");
         }
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+        else if(evt.getKeyCode() == KeyEvent.VK_ENTER){
         	// Display msg from input panel to output panel
+        	evt.consume();
         	String text = TextInputPanel.getText();
         	TextInputPanel.setText("");
     		server.sendString(text);
         }
+        else{
+        	
+        }
     }  
     
     public void addText(String text) {
-    	displayText.setText(displayText.getText() + text + "\n\n");
+    	displayText.setText(displayText.getText() + text + "\n");
     }
     
     public void updateUserList(Vector<String> users){
