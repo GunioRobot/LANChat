@@ -15,7 +15,7 @@ public class ServerAnnouncer extends Thread {
 	
 	// AF(c) = A source of Announce messages for server c.server from c.address, every defaultDelay milliseconds
 	// The Rep Invariant is
-	// socket != null, address != null, delay != null, server != null
+	// socket != null, address != null, server != null
 	
     private MulticastSocket socket;
     private InetSocketAddress address;
@@ -69,4 +69,12 @@ public class ServerAnnouncer extends Thread {
         }
     }
 
+    public boolean repOk() {
+		return (socket != null && address != null && server != null);
+	}
+	
+	public String toString() {
+		return "[ ServerAnnouncer: "+ server + " ]";
+	}
+    
 }

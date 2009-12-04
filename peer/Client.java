@@ -16,8 +16,7 @@ public class Client extends Peer{
 	//OVERVIEW: A client represents a client on a network in a server-client model.
 	//			It can send and receive basic messages using DatagramSockets.
 		
-	// AF(c) = c.getClientHandle on c.serverAddress:c.serverPort, password = c.password, 
-	// gui = c.window
+	// AF(c) = [Client c.getClientHandle on c.serverAddress:c.serverPort, password = c.password ]
 		
 	//Rep Invariant:
 	// clientHandle != null, password != null, hasPassword != null, clientWindow != null
@@ -145,4 +144,13 @@ public class Client extends Peer{
 	//EFFECTS: returns client handle
 		return this.clientHandle;
 	}
+	
+	public boolean repOk() {
+		return (clientHandle != null && password != null && window != null);
+	}
+	
+	public String toString() {
+		return "[Client " + getClientHandle()+" on "+serverAddress+":"+this.getPort()+", "+password+"]";
+	}
+	
 }

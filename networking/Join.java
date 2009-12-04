@@ -59,4 +59,12 @@ public class Join implements Message {
         // EFFECTS: returns the type of this packet
         return type;
     }
+
+	public boolean repOk() {
+		return (type == MessageType.JOIN && clientHandle != null && password != null && clientAddress != null);
+	}
+	
+	public String toString() {
+		return "[ JOIN: "+clientHandle+", "+password+", "+clientAddress+", "+clientPort+" ]";
+	}
 }

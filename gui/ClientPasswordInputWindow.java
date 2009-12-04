@@ -60,7 +60,6 @@ public class ClientPasswordInputWindow extends JFrame {
 				try {
 					enterButtonMouseReleased(evt);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -164,7 +163,6 @@ public class ClientPasswordInputWindow extends JFrame {
 				c.start();
 				dispose();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -195,6 +193,15 @@ public class ClientPasswordInputWindow extends JFrame {
 	public String getInputPassword() {
 		// EFFECTS: return the password in a String
 		return this.password;
+	}
+	
+	public boolean repOk() {
+		return (password != null && sV != null && userName != null &&
+				cancelButton != null && enterButton != null && passwordInputField != null);
+	}
+	
+	public String toString() {
+		return "[ Client Password Input Window ]";
 	}
 
 }

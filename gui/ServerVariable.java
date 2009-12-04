@@ -8,8 +8,8 @@ public class ServerVariable {
 	// DATA TYPE
 	private SocketAddress address; // cannot be null
 	private String serverName; // cannot be null
-	private int numMembers; // cannot be null
-	private boolean needsPassword; // cannot be null
+	private int numMembers; // must be > 0
+	private boolean needsPassword;
 
 	// Constructor
 	public ServerVariable(SocketAddress address, String serverName,
@@ -69,5 +69,10 @@ public class ServerVariable {
 			s += " (Requires Password)";
 		}
 		return s;
+	}	
+
+	public boolean repOk() {
+		return (address != null && serverName != null && numMembers > 0);
 	}
+	
 }

@@ -123,5 +123,14 @@ public class FileServer extends Thread {
 		}
     }
     
+
+	public boolean repOk() {
+		return (server != null && filenames != null);
+	}
+	
+	public String toString() {
+		return "[ FileServer hosting: "+filenames+" ]";
+	}
+    
 }
 

@@ -62,4 +62,12 @@ public class ChannelStatus implements Message {
         // EFFECTS: returns the type of this packet
         return type;
     }
+    
+	public boolean repOk() {
+		return (type == MessageType.CHANNEL_STATUS && clientHandles != null);
+	}
+	
+	public String toString() {
+		return "[ CHANNEL_STATUS: "+this.clientHandles+" ]";
+	}
 }

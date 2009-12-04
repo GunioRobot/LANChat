@@ -1,6 +1,8 @@
 
 package networking;
 
+import java.util.Vector;
+
 public enum MessageType {
 	// OVERVIEW: Enumerates the ID fields of chat protocol messages
 	
@@ -30,6 +32,16 @@ public enum MessageType {
     		}
     	}
     	return UNKNOWN;
+    }
+    
+    public boolean repOk() {
+    	// Returns true if the ID field is a known ID or 0
+    	for(MessageType type : MessageType.values()) {
+    		if(this.id == type.id) {
+    			return true;
+    		}
+    	}
+    	return false;
     }
 };
 

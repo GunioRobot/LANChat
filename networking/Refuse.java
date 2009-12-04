@@ -48,4 +48,12 @@ public class Refuse implements Message {
         // EFFECTS: returns the type of this packet
         return type;
     }
+    
+	public boolean repOk() {
+		return (type == MessageType.REFUSE && reason != null);
+	}
+	
+	public String toString() {
+		return "[ REFUSE: "+reason+" ]";
+	}
 }

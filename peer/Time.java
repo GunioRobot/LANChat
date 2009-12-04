@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class Time {
-//OVERVIEW: Function to get formated local time
+//OVERVIEW: Function to get formatted local time
 	public static final String DATE_FORMAT_NOW = "HH:mm:ss";
 	
 	//Constructor

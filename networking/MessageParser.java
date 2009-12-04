@@ -58,4 +58,12 @@ public class MessageParser {
         stream.writeInt(bin.length);
         stream.write(bin);
     }
+    
+    public boolean repOk() {
+    	return true;
+    }
+    
+    public String toString() {
+    	return "[ MessageParser ]";
+    }
 }

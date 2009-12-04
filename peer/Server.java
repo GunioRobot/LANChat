@@ -253,4 +253,12 @@ public class Server extends Peer{
 		return this.serverName;
 	}
 
+	public boolean repOk() {
+		return (serverName != null && clientHandle != null && password != null && window != null && announcer != null);
+	}
+	
+	public String toString() {
+		return "[Server " + serverName + " made by " + getClientHandle()+" on "+serverAddress+":"+this.getPort()+", "+password+"]";
+	}
+	
 }

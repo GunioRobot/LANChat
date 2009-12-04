@@ -51,7 +51,6 @@ public class CreateServerWindow extends JFrame {
 				try {
 					createrServerButtonMouseReleased(evt);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -248,6 +247,16 @@ public class CreateServerWindow extends JFrame {
 		// EFFECTS: if evt is Null then throws NullPointerException
 		// else if disopse THIS
 		dispose();
+	}
+
+	public boolean repOk() {
+		return (userName != null && cancelButton != null && createrServerButton != null &&
+				passwordCheckbox != null && passwordField != null && serverNameField != null &&
+				serverNameLabel != null);
+	}
+	
+	public String toString() {
+		return "[ Server Creation Window ]";
 	}
 
 }

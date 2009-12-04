@@ -90,10 +90,8 @@ public class StartupWindow extends JFrame implements
 						try {
 							JoinYourDefinedServerButtonMouseReleased(evt);
 						} catch (NumberFormatException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
@@ -440,7 +438,6 @@ public class StartupWindow extends JFrame implements
 					c.start();
 
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -481,7 +478,6 @@ public class StartupWindow extends JFrame implements
 				try {
 					new StartupWindow().setVisible(true);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -515,6 +511,19 @@ public class StartupWindow extends JFrame implements
 		svList.add(sv);
 		ServerList.setListData(svList);
 		ServerList.setSelectedIndex(a);
+	}
+
+
+	public boolean repOk() {
+		return (NickNameLabel != null && NickNameTextField != null && QuitButton != null && ServerButton != null &&
+				ServerList != null && jScrollPane1 != null && joinServerButton != null && mainTitle != null &&
+				svList != null && DefineLabel != null && HostNameLabel != null && HostNameTextF != null &&
+				PortLabel != null && PortTextField != null && JoinYourDefinedServerButton != null && passwordTF != null &&
+				passwordLabel != null);
+	}
+	
+	public String toString() {
+		return "[ Startup Window ]";
 	}
 
 }

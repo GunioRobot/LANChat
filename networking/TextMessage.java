@@ -66,4 +66,12 @@ public class TextMessage implements Message {
         // EFFECTS: returns the type of this packet
         return type;
     }
+    
+    public boolean repOk() {
+		return (type == MessageType.TEXT_MESSAGE && password != null && clientHandle != null && message != null);
+	}
+	
+	public String toString() {
+		return "[ TEXT_MESSAGE: "+password+", "+clientHandle+", "+message+" ]";
+	}
 }

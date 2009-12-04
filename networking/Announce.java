@@ -70,5 +70,13 @@ public class Announce implements Message {
         // EFFECTS: returns the type of this packet
         return type;
     }
+
+	public boolean repOk() {
+		return (type == MessageType.ANNOUNCE && serverName != null && serverAddress != null);
+	}
+	
+	public String toString() {
+		return "[ ANNOUNCE: "+serverName+", "+serverAddress+", "+serverPort+", "+numMembers+", "+needsPassword+" ]";
+	}
 }
 

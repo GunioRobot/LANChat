@@ -64,4 +64,12 @@ public class ChannelUpdate implements Message {
         // EFFECTS: returns the type of this packet
         return type;
     }
+
+	public boolean repOk() {
+		return (type == MessageType.CHANNEL_UPDATE && clientHandle != null && message != null && date != null);
+	}
+	
+	public String toString() {
+		return "[ CHANNEL_UPDATE: "+clientHandle+", "+message+", "+date+" ]";
+	}
 }

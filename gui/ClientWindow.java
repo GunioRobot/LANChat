@@ -16,7 +16,8 @@ public class ClientWindow extends JFrame {
 	// OVERVIEW: ClientWindow is a public class and a subclass of JFrame
 
 	// Data Type
-	// All the rep invar cannot be null
+	// Rep Invariant:
+	// None of the fields can be null
 	private JFileChooser fc = new JFileChooser();
 	private JButton shareFileButton;
 	private Client client;
@@ -65,7 +66,6 @@ public class ClientWindow extends JFrame {
 				try {
 					shareFileButtonMouseReleased(evt);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -74,7 +74,6 @@ public class ClientWindow extends JFrame {
 
 			@Override
 			public void windowActivated(WindowEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 
@@ -86,31 +85,26 @@ public class ClientWindow extends JFrame {
 
 			@Override
 			public void windowClosing(WindowEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void windowDeactivated(WindowEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void windowDeiconified(WindowEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void windowIconified(WindowEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void windowOpened(WindowEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 		});
@@ -243,6 +237,16 @@ public class ClientWindow extends JFrame {
 		// EFFECTS: if msg is null then throw NullPointerException
 		// else if create a Dialog that displays msg
 		JOptionPane.showMessageDialog(null, msg);
+	}
+
+	public boolean repOk() {
+		return (fc != null && shareFileButton != null && client != null && displayText != null &&
+				SendButton != null && TextInputPanel != null && userList != null && jScrollPane1 != null &&
+				jScrollPane2 != null && jScrollPane3 != null && users != null);
+	}
+	
+	public String toString() {
+		return "[ Client Window ]";
 	}
 
 }

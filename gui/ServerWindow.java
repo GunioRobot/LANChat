@@ -23,7 +23,7 @@ public class ServerWindow extends JFrame {
 	private JButton SendButton;
 	private JTextPane displayText;
 	private JTextPane TextInputPanel;
-	private JList UserLisT;
+	private JList userList;
 	private JScrollPane jScrollPane1;
 	private JScrollPane jScrollPane2;
 	private JScrollPane jScrollPane3;
@@ -50,7 +50,7 @@ public class ServerWindow extends JFrame {
 		//
 		SendButton = new javax.swing.JButton();
 		jScrollPane3 = new javax.swing.JScrollPane();
-		UserLisT = new javax.swing.JList();
+		userList = new javax.swing.JList();
 		jScrollPane2 = new javax.swing.JScrollPane();
 		TextInputPanel = new javax.swing.JTextPane();
 		jScrollPane1 = new javax.swing.JScrollPane();
@@ -66,7 +66,6 @@ public class ServerWindow extends JFrame {
 
 			@Override
 			public void windowActivated(WindowEvent arg0) {
-				// TODO Auto-generated method stub
 
 			}
 
@@ -78,31 +77,26 @@ public class ServerWindow extends JFrame {
 
 			@Override
 			public void windowClosing(WindowEvent arg0) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void windowDeactivated(WindowEvent arg0) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void windowDeiconified(WindowEvent arg0) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void windowIconified(WindowEvent arg0) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void windowOpened(WindowEvent arg0) {
-				// TODO Auto-generated method stub
 
 			}
 		});
@@ -114,7 +108,6 @@ public class ServerWindow extends JFrame {
 				try {
 					shareFileButtonMouseReleased(evt);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -126,8 +119,8 @@ public class ServerWindow extends JFrame {
 				SendButtonMouseReleased(evt);
 			}
 		});
-		UserLisT.setListData(users);
-		UserLisT.setModel(new javax.swing.AbstractListModel() {
+		userList.setListData(users);
+		userList.setModel(new javax.swing.AbstractListModel() {
 			public int getSize() {
 				return users.size();
 			}
@@ -136,7 +129,7 @@ public class ServerWindow extends JFrame {
 				return users.get(i);
 			}
 		});
-		jScrollPane3.setViewportView(UserLisT);
+		jScrollPane3.setViewportView(userList);
 
 		TextInputPanel.addKeyListener(new java.awt.event.KeyAdapter() {
 			public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -318,7 +311,7 @@ public class ServerWindow extends JFrame {
 		// EFFECTS: if users is null then throw NullpointerException
 		// else if set the data of userList to be users.
 		this.users = users;
-		UserLisT.setListData(users);
+		userList.setListData(users);
 	}
 
 	// Producer
@@ -328,4 +321,13 @@ public class ServerWindow extends JFrame {
 		JOptionPane.showMessageDialog(null, msg);
 	}
 
+	public boolean repOk() {
+		return (fc != null && shareFileButton != null && server != null && displayText != null &&
+				SendButton != null && TextInputPanel != null && userList != null && jScrollPane1 != null &&
+				jScrollPane2 != null && jScrollPane3 != null && users != null);
+	}
+	
+	public String toString() {
+		return "[ Server Window ]";
+	}
 }
