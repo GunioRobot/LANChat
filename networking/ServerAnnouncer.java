@@ -46,7 +46,6 @@ public class ServerAnnouncer extends Thread {
                 Announce announce = new Announce(server.getServerName(), server.getLocalAddress(), server.getServerPort(), server.getNumMembers(), server.needsPassword);
                 byte[] data = announce.getBytes();
                 DatagramPacket packet = new DatagramPacket(data, data.length, address);
-                System.out.println("ServerAnnouncer: sending announce to " + packet.getAddress().getHostName() + ":" + packet.getPort());
                 socket.send(packet);
             } catch (IOException ex) {
                 System.out.println("ServerAnnouncer: failed sending announce: " + ex);

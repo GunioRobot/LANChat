@@ -10,6 +10,7 @@ import java.net.SocketAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
+import networking.FileServer;
 import networking.Join;
 import networking.Message;
 import networking.MessageParser;
@@ -25,9 +26,12 @@ public abstract class Peer extends Thread {
     // Address of the server
     public InetSocketAddress serverAddress;
 
+    // File Server
+    public FileServer fileserver;
+    
     // constructors
     
-    public Peer() throws SocketException {
+    public Peer() throws IOException {
         // EFFECTS: Initializes this with a new socket and sets the server address
         // to it's own address
         socket = new DatagramSocket();
@@ -122,7 +126,7 @@ public abstract class Peer extends Thread {
     protected void handleMessage(Message message, InetSocketAddress source) {
 
     	// Print out type of packet
-		System.out.println("[" + getPeerName() + "] Received a " + message.getType());
+		//System.out.println("[" + getPeerName() + "] Received a " + message.getType());
 
 		// Fix IP address of JOIN messages since some machines don't know their own address...
 		if(message.getType() == MessageType.JOIN) {
@@ -131,7 +135,18 @@ public abstract class Peer extends Thread {
     }
     
     public String getPeerName() {
+    	// EFFECTS: returns the name/handle of this Peer
     	return "Peer";
     }
 
+    public String shareFile(String filename) throws IOException {
+    	if(fileserver == null) {
+    		fileserver = new FileServer(filename, 0);
+    		fileserver.start();
+    	}
+    	else {
+    		fileserver.addFile(filename);
+    	}
+    	return fileserver.getURL(filename);
+    }
 }

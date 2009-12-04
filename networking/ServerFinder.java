@@ -53,14 +53,11 @@ public class ServerFinder extends Thread {
 	public void run() {
 		
 		try {
-			while(!Thread.interrupted()) {
-				System.out.println("ServerFinder: listening for " + this.multicastAddress + ":" + this.listenPort);
-   
+			while(!Thread.interrupted()) {   
 				DatagramPacket p = new DatagramPacket(new byte[1024], 1024);
 				socket.receive(p);
 				
                 Message message = MessageParser.parse(p.getData());
-            	System.out.println("ServerFinder: received a " + message.getType() + " message");
             	
                 if(message.getType() == MessageType.ANNOUNCE) {
                     Announce announce = (Announce)message;
