@@ -1,8 +1,6 @@
 package gui;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.SocketException;
 import javax.swing.*;
 import peer.Server;
 

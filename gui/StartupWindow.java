@@ -5,13 +5,9 @@ package gui;
  *
  * Created on 2009-11-12, 0:34:36
  */
-import java.awt.Window;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.net.UnknownHostException;
-import java.util.Iterator;
 import java.util.Vector;
 import javax.swing.*;
 import networking.*;

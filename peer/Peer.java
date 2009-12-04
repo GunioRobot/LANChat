@@ -7,6 +7,7 @@ import java.net.DatagramSocket;
 import java.net.Inet4Address;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 import networking.FileServer;
@@ -31,6 +32,7 @@ public abstract class Peer extends Thread {
     public Peer() throws IOException {
         // EFFECTS: Initializes this with a new socket and sets the server address
         // to it's own address
+    	super();
         socket = new DatagramSocket();
         this.serverAddress = (InetSocketAddress)socket.getLocalSocketAddress();
     }
@@ -92,6 +94,7 @@ public abstract class Peer extends Thread {
         // EFFECTS: listens for incoming packets. Blocks until new data is available,
         // then returns the new data as a DatagramPacket
 		DatagramPacket receivedPacket = new DatagramPacket(new byte[1024], 1024);
+		socket.setSoTimeout(1000);
 		socket.receive(receivedPacket);
 		return receivedPacket;
 	}
@@ -108,6 +111,8 @@ public abstract class Peer extends Thread {
             try {
                 packet = this.receiveData();
 
+            } catch (SocketTimeoutException ex) {
+            	continue;
             } catch (IOException ex) {
                 System.err.println("Peer: Error reading from socket:" + ex);
                 continue;
