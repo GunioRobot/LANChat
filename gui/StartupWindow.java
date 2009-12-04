@@ -106,7 +106,7 @@ public class StartupWindow extends JFrame implements
 		DefineLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 		DefineLabel.setText("Define Your Own Server");
 
-		HostNameLabel.setText("Host Name");
+		HostNameLabel.setText("Host IP");
 
 		PortLabel.setText("Port");
 
@@ -465,7 +465,7 @@ public class StartupWindow extends JFrame implements
 		// it
 
 		Client c = new Client(this.HostNameTextF.getText(), Integer
-				.parseInt(this.HostNameTextF.getText()), NickNameTextField
+				.parseInt(this.PortTextField.getText()), NickNameTextField
 				.getText(), passwordTF.getText());
 		c.start();
 	}
