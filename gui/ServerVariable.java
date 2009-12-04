@@ -6,6 +6,8 @@ import java.net.SocketAddress;
 public class ServerVariable {
 	// OVERVIEW: ServerVariable is a public and mutable class
 	// DATA TYPE
+	//
+	//AF(c) = c.address = this.address, c.numMembers = this.numMembers, c.needsPassword = this.needsPassword
 	private SocketAddress address; // cannot be null
 	private String serverName; // cannot be null
 	private int numMembers; // must be > 0

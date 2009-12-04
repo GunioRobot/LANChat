@@ -17,8 +17,10 @@ public class ServerWindow extends JFrame {
 
 	// Data Type
 	// All the rep invar cannot be null
+	// //AF(c) = c.server = this.server, c.users = for(0<i<userList.size())
+	// userList.get(i);
 	private static final long serialVersionUID = 1L;
-    private JFileChooser fc = new JFileChooser();
+	private JFileChooser fc = new JFileChooser();
 	private Vector<String> users = new Vector<String>(1);
 	private JButton SendButton;
 	private JTextPane displayText;
@@ -56,12 +58,10 @@ public class ServerWindow extends JFrame {
 		jScrollPane1 = new javax.swing.JScrollPane();
 		displayText = new javax.swing.JTextPane();
 		shareFileButton = new javax.swing.JButton();
-	
-		
-		
+
 		shareFileButton.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
 		shareFileButton.setText("Share a File");
-		
+
 		a.addWindowListener(new WindowListener() {
 
 			@Override
@@ -101,7 +101,8 @@ public class ServerWindow extends JFrame {
 			}
 		});
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-		setTitle("Server @ " + server.getLocalAddress() + ":"+ server.getPort());
+		setTitle("Server @ " + server.getLocalAddress() + ":"
+				+ server.getPort());
 		setLocationByPlatform(true);
 		shareFileButton.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseReleased(java.awt.event.MouseEvent evt) {
@@ -285,12 +286,14 @@ public class ServerWindow extends JFrame {
 		}
 	}
 
-	private void shareFileButtonMouseReleased(java.awt.event.MouseEvent evt) throws IOException {
-		//EFFECTS: if evt is null then throw NullPointerException
-		//         else if IO problems occur then throws IOException
-		//         else if create file chooser dialog and let user choose a file
-		//		   then get the file name and share the file on the http server
-		//         then send a msg that contains information about the file to the server
+	private void shareFileButtonMouseReleased(java.awt.event.MouseEvent evt)
+			throws IOException {
+		// EFFECTS: if evt is null then throw NullPointerException
+		// else if IO problems occur then throws IOException
+		// else if create file chooser dialog and let user choose a file
+		// then get the file name and share the file on the http server
+		// then send a msg that contains information about the file to the
+		// server
 		int returnVal = fc.showOpenDialog(ServerWindow.this);
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -322,12 +325,16 @@ public class ServerWindow extends JFrame {
 	}
 
 	public boolean repOk() {
-		return (fc != null && shareFileButton != null && server != null && displayText != null &&
-				SendButton != null && TextInputPanel != null && userList != null && jScrollPane1 != null &&
-				jScrollPane2 != null && jScrollPane3 != null && users != null);
+		return (fc != null && shareFileButton != null && server != null
+				&& displayText != null && SendButton != null
+				&& TextInputPanel != null && userList != null
+				&& jScrollPane1 != null && jScrollPane2 != null
+				&& jScrollPane3 != null && users != null);
 	}
-	
+
 	public String toString() {
-		return "[ Server Window ]";
+
+		return new String("Server is " + this.server + " Users are"
+				+ users.toString());
 	}
 }

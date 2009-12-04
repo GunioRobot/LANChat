@@ -9,6 +9,7 @@ public class CreateServerWindow extends JFrame {
 
 	// Data Type
 	// All the rep variance cannot be null
+	//AF(c) = c.userName = this.userName, 
 	private static final long serialVersionUID = 1L;
 	private String userName;
 	private JButton cancelButton;
@@ -255,8 +256,8 @@ public class CreateServerWindow extends JFrame {
 				serverNameLabel != null);
 	}
 	
-	public String toString() {
-		return "[ Server Creation Window ]";
+	public String toString(){
+		
+		return this.userName;
 	}
-
 }

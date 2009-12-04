@@ -14,6 +14,7 @@ public class ClientPasswordInputWindow extends JFrame {
 	// when a client is asked for a password
 
 	// Data Type
+	// AF(c) = c.password = passwordInputFiled.getPassword(), c.sV = this.sV,
 	private String password = ""; // cannot be null
 	private ServerVariable sV; // cannot be null
 	private String userName; // cannot be null
@@ -194,14 +195,18 @@ public class ClientPasswordInputWindow extends JFrame {
 		// EFFECTS: return the password in a String
 		return this.password;
 	}
-	
+
 	public boolean repOk() {
-		return (password != null && sV != null && userName != null &&
-				cancelButton != null && enterButton != null && passwordInputField != null);
+		return (password != null && sV != null && userName != null
+				&& cancelButton != null && enterButton != null && passwordInputField != null);
 	}
-	
+
 	public String toString() {
-		return "[ Client Password Input Window ]";
+
+		return new String("ClientPasswordInput is " +
+
+		this.password + "serverInformation is " + this.sV);
+
 	}
 
 }

@@ -18,6 +18,8 @@ public class ClientWindow extends JFrame {
 	// Data Type
 	// Rep Invariant:
 	// None of the fields can be null
+	// AF(c) = c.client = this.client, c.users = for(0<i<userList.size())
+	// userList.get(i);
 	private JFileChooser fc = new JFileChooser();
 	private JButton shareFileButton;
 	private Client client;
@@ -137,41 +139,109 @@ public class ClientWindow extends JFrame {
 		displayText.setEditable(false);
 		jScrollPane1.setViewportView(displayText);
 
-		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(SendButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
-                    .addComponent(shareFileButton, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(shareFileButton, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(SendButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE))
-                .addGap(16, 16, 16))
-        );
+		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(
+				getContentPane());
+		getContentPane().setLayout(layout);
+		layout
+				.setHorizontalGroup(layout
+						.createParallelGroup(
+								javax.swing.GroupLayout.Alignment.LEADING)
+						.addGroup(
+								javax.swing.GroupLayout.Alignment.TRAILING,
+								layout
+										.createSequentialGroup()
+										.addContainerGap()
+										.addGroup(
+												layout
+														.createParallelGroup(
+																javax.swing.GroupLayout.Alignment.LEADING)
+														.addComponent(
+																jScrollPane1,
+																javax.swing.GroupLayout.DEFAULT_SIZE,
+																311,
+																Short.MAX_VALUE)
+														.addComponent(
+																jScrollPane2,
+																javax.swing.GroupLayout.DEFAULT_SIZE,
+																311,
+																Short.MAX_VALUE))
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addGroup(
+												layout
+														.createParallelGroup(
+																javax.swing.GroupLayout.Alignment.LEADING)
+														.addComponent(
+																SendButton,
+																javax.swing.GroupLayout.Alignment.TRAILING,
+																javax.swing.GroupLayout.DEFAULT_SIZE,
+																123,
+																Short.MAX_VALUE)
+														.addComponent(
+																jScrollPane3,
+																javax.swing.GroupLayout.Alignment.TRAILING,
+																javax.swing.GroupLayout.DEFAULT_SIZE,
+																123,
+																Short.MAX_VALUE)
+														.addComponent(
+																shareFileButton,
+																javax.swing.GroupLayout.DEFAULT_SIZE,
+																123,
+																Short.MAX_VALUE))
+										.addContainerGap()));
+		layout
+				.setVerticalGroup(layout
+						.createParallelGroup(
+								javax.swing.GroupLayout.Alignment.LEADING)
+						.addGroup(
+								javax.swing.GroupLayout.Alignment.TRAILING,
+								layout
+										.createSequentialGroup()
+										.addContainerGap()
+										.addGroup(
+												layout
+														.createParallelGroup(
+																javax.swing.GroupLayout.Alignment.LEADING)
+														.addComponent(
+																jScrollPane1,
+																javax.swing.GroupLayout.DEFAULT_SIZE,
+																214,
+																Short.MAX_VALUE)
+														.addComponent(
+																jScrollPane3,
+																javax.swing.GroupLayout.DEFAULT_SIZE,
+																214,
+																Short.MAX_VALUE))
+										.addPreferredGap(
+												javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addGroup(
+												layout
+														.createParallelGroup(
+																javax.swing.GroupLayout.Alignment.TRAILING)
+														.addGroup(
+																layout
+																		.createSequentialGroup()
+																		.addComponent(
+																				shareFileButton,
+																				javax.swing.GroupLayout.DEFAULT_SIZE,
+																				35,
+																				Short.MAX_VALUE)
+																		.addPreferredGap(
+																				javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																		.addComponent(
+																				SendButton,
+																				javax.swing.GroupLayout.PREFERRED_SIZE,
+																				40,
+																				javax.swing.GroupLayout.PREFERRED_SIZE))
+														.addComponent(
+																jScrollPane2,
+																javax.swing.GroupLayout.DEFAULT_SIZE,
+																81,
+																Short.MAX_VALUE))
+										.addGap(16, 16, 16)));
 
-        pack();
-    }
+		pack();
+	}
 
 	// Mutators
 	private void SendButtonMouseReleased(java.awt.event.MouseEvent evt) {
@@ -182,13 +252,15 @@ public class ClientWindow extends JFrame {
 		TextInputPanel.setText("");
 		client.send(text);
 	}
-	
-	private void shareFileButtonMouseReleased(java.awt.event.MouseEvent evt) throws IOException {
-		//EFFECTS: if evt is null then throw NullPointerException
-		//         else if IO problems occur then throws IOException
-		//         else if create file chooser dialog and let user choose a file
-		//		   then get the file name and share the file on the http server
-		//         then send a msg that contains information about the file to the server
+
+	private void shareFileButtonMouseReleased(java.awt.event.MouseEvent evt)
+			throws IOException {
+		// EFFECTS: if evt is null then throw NullPointerException
+		// else if IO problems occur then throws IOException
+		// else if create file chooser dialog and let user choose a file
+		// then get the file name and share the file on the http server
+		// then send a msg that contains information about the file to the
+		// server
 		int returnVal = fc.showOpenDialog(ClientWindow.this);
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -240,13 +312,14 @@ public class ClientWindow extends JFrame {
 	}
 
 	public boolean repOk() {
-		return (fc != null && shareFileButton != null && client != null && displayText != null &&
-				SendButton != null && TextInputPanel != null && userList != null && jScrollPane1 != null &&
-				jScrollPane2 != null && jScrollPane3 != null && users != null);
-	}
-	
-	public String toString() {
-		return "[ Client Window ]";
+		return (fc != null && shareFileButton != null && client != null
+				&& displayText != null && SendButton != null
+				&& TextInputPanel != null && userList != null
+				&& jScrollPane1 != null && jScrollPane2 != null
+				&& jScrollPane3 != null && users != null);
 	}
 
+	public String toString(){
+		return new String("Client is " + this.client + "User list contains" + userList.toString());
+	}
 }

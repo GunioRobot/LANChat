@@ -21,6 +21,7 @@ public class StartupWindow extends JFrame implements
 
 	// Data Type
 	// All the rep invar cannot be null
+	// AF(c) = c.svList = for(0<i<svList.size()) svList.get(i);
 	private JLabel NickNameLabel;
 	private JTextField NickNameTextField;
 	private JButton QuitButton;
@@ -513,17 +514,20 @@ public class StartupWindow extends JFrame implements
 		ServerList.setSelectedIndex(a);
 	}
 
-
 	public boolean repOk() {
-		return (NickNameLabel != null && NickNameTextField != null && QuitButton != null && ServerButton != null &&
-				ServerList != null && jScrollPane1 != null && joinServerButton != null && mainTitle != null &&
-				svList != null && DefineLabel != null && HostNameLabel != null && HostNameTextF != null &&
-				PortLabel != null && PortTextField != null && JoinYourDefinedServerButton != null && passwordTF != null &&
-				passwordLabel != null);
+		return (NickNameLabel != null && NickNameTextField != null
+				&& QuitButton != null && ServerButton != null
+				&& ServerList != null && jScrollPane1 != null
+				&& joinServerButton != null && mainTitle != null
+				&& svList != null && DefineLabel != null
+				&& HostNameLabel != null && HostNameTextF != null
+				&& PortLabel != null && PortTextField != null
+				&& JoinYourDefinedServerButton != null && passwordTF != null && passwordLabel != null);
 	}
-	
+
 	public String toString() {
-		return "[ Startup Window ]";
+
+		return new String("Servers are " + svList.toString());
 	}
 
 }
