@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URLDecoder;
 import java.net.UnknownHostException;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -32,13 +33,14 @@ public class FileServer extends Thread {
 
     public void addFile(String filename) {
     	// EFFECTS: Adds a filename to the list of known filenames
-    	filenames.add(filename);
+    	// Prepends a forward slash so that Windows paths can be used
+    	filenames.add("/" + filename);
     }
     
     public String getURL(String filename) throws UnknownHostException {
     	// EFFECTS: Returns the URL at which a file can be accessed, assuming the file is already known by the server.
     	// Throws UnknownHostException if there is a problem getting the address of this machine.
-    	return "http://" + Inet4Address.getLocalHost().getHostAddress() + ":" + server.getLocalPort() + filename;
+    	return "http://" + Inet4Address.getLocalHost().getHostAddress() + ":" + server.getLocalPort() + "/" + filename;
     }
     
     @Override
@@ -79,12 +81,16 @@ public class FileServer extends Thread {
 				String request = in.readLine();
 
 	            StringTokenizer tokenizer = new StringTokenizer(request);
-	            String httpMethod = tokenizer.nextToken();
-	            String httpQueryString = tokenizer.nextToken();
+	            String method = tokenizer.nextToken();
+	            String query = tokenizer.nextToken();
+
+	            // Decode the path and remove the preceding forward-slash
+	            String path = URLDecoder.decode(query, "UTF-8").substring(1);
 	            
-	            if(httpMethod.equals("GET") && server.filenames.contains(httpQueryString)) {
-	            	System.out.println("FileServer: received a GET request");
-	            	FileInputStream fin = new FileInputStream(httpQueryString);
+	            System.out.println("FileServer: received a request for " + path);
+
+	            if(method.equals("GET") && server.filenames.contains(path)) {
+	            	FileInputStream fin = new FileInputStream(path);
 	            	out.writeBytes("HTTP/1.1 200 OK\r\n");
 	            	out.writeBytes("Content-Length: " + fin.available() + "\r\n");
 	                out.writeBytes("\r\n");
@@ -110,9 +116,15 @@ public class FileServer extends Thread {
 				this.connection.close();
 				
 			} catch (IOException e) {
-				System.err.println("FileServer: Error reading file");
+				System.err.println("FileServer: Error serving file request");
 			}
 		}
+    }
+    
+    public static void main(String args[]) throws IOException {
+    	FileServer f = new FileServer("/Users/rob/testfile", 0);
+    	System.out.println(f.getURL("/Users/rob/testfile"));
+    	f.start();
     }
 }
 
