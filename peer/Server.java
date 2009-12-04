@@ -18,24 +18,31 @@ import networking.ServerAnnouncer;
 import networking.TextMessage;
 
 public class Server extends Peer{
-//OVERVIEW: Server receives messages from clients and sends messages back to all clients
+//OVERVIEW: A server represents a server on a network in a server-client model.
+//	It can receive messages from clients or itself and updates all clients with the message.
     
-    private ArrayList<ClientInfo> clientList;
+//	AF(c) = c.getClientHandle() on c.getServerName() @ c.serverAddress:c.serverPort
+//			password = c.password, announcer = new ServerAnnouncer(), gui = c.window
+//	AF(c.clientList) = for (0<=i<clientList.size()) clientList.get(i);
+	
+// Rep Invariants:
+	private ArrayList<ClientInfo> clientList;	//clientList elements cannot be null and all elements must have unique clientHandle
     
-    private String serverName;
-    protected String password;
-    private String clientHandle;
+    private String serverName;	//cannot be null
+    protected String password;	//cannot be null
+    private String clientHandle;	//cannot be null
     public boolean needsPassword;
     
-    private ServerAnnouncer announcer;
+    private ServerAnnouncer announcer;	//cannot be null
     
-    private ServerWindow window;
+    private ServerWindow window;	//cannot be null
     
 //Constructor
     public Server(String serverName, String password, boolean needsPassword, String clientHandle) throws IOException {
     //EFFECTS: If serverPort is in use throw SocketException
-    //         else initialize serverChat gui and instantiate server with serverPort, serverName, password, clientHandle, and empty clientList
-    //			set needsPassword to password.isEmpty()
+    //         else initialize serverChat gui and instantiate server with serverPort, 
+    //			serverName, password, clientHandle, and empty clientList
+    //			set needsPassword to true if password is not empty else set to false
         super();
         
         window = new ServerWindow(this);
@@ -173,7 +180,17 @@ public class Server extends Peer{
     
     @Override
     protected void handleMessage(Message message, InetSocketAddress source) {
-    //EFFECTS: parse message based on type and handles them
+    //REQUIRES: message and source are not null
+    //EFFECTS: parses message:
+    //			if message is TEXT_MESSAGE check password
+    //				if incorrect, ignore
+    //				else parse message and send message and new clientHandleList to all clients
+    //			if message is JOIN check password 
+    //				if incorrect, send a refuse("Invalid Password")
+    //				else add client to clientList
+    //			if message is LEAVE check password
+    //				if incorrect, ignore
+    //				else remove client from clientList
     	
     	super.handleMessage(message, source);
     	

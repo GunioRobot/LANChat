@@ -1,7 +1,6 @@
 package peer;
 
 import gui.ClientWindow;
-import gui.PasswordException;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -10,23 +9,28 @@ import networking.ChannelStatus;
 import networking.ChannelUpdate;
 import networking.Join;
 import networking.Message;
-import networking.MessageType;
 import networking.Refuse;
 import networking.TextMessage;
 
 public class Client extends Peer{
-//
-
-    private String clientHandle;
-    private String password;
+//OVERVIEW: A client represents a client on a network in a server-client model.
+//			It can send and receive basic messages using DatagramSockets.
+	
+//AF(c) = c.getClientHandle on c.serverAddress:c.serverPort, password = c.password, 
+//			gui = c.window
+	
+//Rep Invariants:
+    private String clientHandle;	//cannot be null
+    private String password;		//cannot be null
     private boolean hasPassword;
-    private ClientWindow window;
+    private ClientWindow window;	//cannot be null
     
     //Constructor
     public Client(String serverAddress, int serverPort, String clientHandle, String password) throws IOException{
 	//EFFECTS: If serverPort is in use throw SocketException
     //         else initialize clientChat gui and instantiate client with serverAddress, serverPort, clientHandle, and password
     //			send join message to server
+    //			AF(c) = c.getClientHandle() on c.serverAddress:c.serverPort password = c.password
         super(serverAddress, serverPort);
         
         window = new ClientWindow(this);
@@ -43,6 +47,7 @@ public class Client extends Peer{
     
 //Mutator
     public void hasPassword(boolean b){
+    //MODIFIES: hasPassword
     //EFFECTS: set hasPassword to b
         hasPassword = b;
     }
@@ -78,6 +83,7 @@ public class Client extends Peer{
     }
 
     private String msgParse(Message message){
+    //REQUIRES: message is CHANNEL_UPDATE
     //EFFECTS: returns a string of data + " " + clientHandle + " " + message
         ChannelUpdate m = (ChannelUpdate)message;
         String s = ("[" + m.clientHandle + "]: " + m.message);
@@ -87,6 +93,11 @@ public class Client extends Peer{
     
     @Override
     protected void handleMessage(Message message, InetSocketAddress source) {
+    //REQUIRES: message and source are not null
+    //EFFECTS: parses message:
+    //			if message is CHANNEL_UPDATE receive(message)
+    //			if message is CHANNEL_STATUS updateUserList with clientHandles in message
+    //			if refuse prompt a dialog with the reason and terminate clientWindow
     	
     	super.handleMessage(message, source);
 
