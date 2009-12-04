@@ -107,7 +107,7 @@ public class ServerWindow extends JFrame {
 			}
 		});
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-		setTitle("Server Channel");
+		setTitle("Server @ " + server.getLocalAddress() + server.getPort());
 		setLocationByPlatform(true);
 		shareFileButton.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseReleased(java.awt.event.MouseEvent evt) {
