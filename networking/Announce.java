@@ -16,12 +16,16 @@ public class Announce implements Message {
     // int: port that the server is listening on
     // int: number of members in the channel
 
-    private MessageType type = MessageType.ANNOUNCE;
-    public String serverName;
-    public String serverAddress;
-    public int serverPort;
-    public int numMembers;
-    public boolean needsPassword;
+	// AF(c) = [ c.serverName, c.serverAddress, c.serverPort, c.numMembers, c.needsPassword ]
+	// The Rep Invariant is
+	// serverName != null, serverAddress != null
+	
+    private final MessageType type = MessageType.ANNOUNCE;
+    public final String serverName;
+    public final String serverAddress;
+    public final int serverPort;
+    public final int numMembers;
+    public final boolean needsPassword;
 
 
     // constructors

@@ -13,24 +13,25 @@ import networking.Refuse;
 import networking.TextMessage;
 
 public class Client extends Peer{
-//OVERVIEW: A client represents a client on a network in a server-client model.
-//			It can send and receive basic messages using DatagramSockets.
+	//OVERVIEW: A client represents a client on a network in a server-client model.
+	//			It can send and receive basic messages using DatagramSockets.
+		
+	// AF(c) = c.getClientHandle on c.serverAddress:c.serverPort, password = c.password, 
+	// gui = c.window
+		
+	//Rep Invariant:
+	// clientHandle != null, password != null, hasPassword != null, clientWindow != null
 	
-//AF(c) = c.getClientHandle on c.serverAddress:c.serverPort, password = c.password, 
-//			gui = c.window
-	
-//Rep Invariants:
-    private String clientHandle;	//cannot be null
-    private String password;		//cannot be null
+    private String clientHandle;
+    private String password;		
     private boolean hasPassword;
-    private ClientWindow window;	//cannot be null
+    private ClientWindow window;
     
     //Constructor
     public Client(String serverAddress, int serverPort, String clientHandle, String password) throws IOException{
 	//EFFECTS: If serverPort is in use throw SocketException
     //         else initialize clientChat gui and instantiate client with serverAddress, serverPort, clientHandle, and password
     //			send join message to server
-    //			AF(c) = c.getClientHandle() on c.serverAddress:c.serverPort password = c.password
         super(serverAddress, serverPort);
         
         window = new ClientWindow(this);

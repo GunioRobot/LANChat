@@ -191,9 +191,8 @@ public class Server extends Peer{
     //			if message is LEAVE check password
     //				if incorrect, ignore
     //				else remove client from clientList
-    	
     	super.handleMessage(message, source);
-    	
+
         switch(message.getType()) {
             case TEXT_MESSAGE:
                 try{
@@ -216,7 +215,7 @@ public class Server extends Peer{
                 Join j = (Join)message;
                 Refuse refuse;
                 if(j.password.equals(this.password)){
-                	if(addClient(new ClientInfo(j.clientHandle, j.clientAddress, j.clientPort))) {
+                	if(addClient(new ClientInfo(j.clientHandle, source.getAddress().getHostAddress(), j.clientPort))) {
                 		clientUpdate();
                 		System.out.println("clients: " + getNumMembers());
                 		break;
@@ -227,7 +226,7 @@ public class Server extends Peer{
                 	refuse = new Refuse("Invalid Password");
                 }
                 try {
-                    sendTo(refuse, new InetSocketAddress(j.clientAddress, j.clientPort));
+                    sendTo(refuse, source);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }     
@@ -235,7 +234,7 @@ public class Server extends Peer{
             case LEAVE:
                 Leave l = (Leave)message;
                 if(l.password.equals(this.password)){
-                    removeClient(new ClientInfo(l.clientHandle, l.clientAddress, l.clientPort) );
+                    removeClient(new ClientInfo(l.clientHandle, source.getAddress().getHostAddress(), l.clientPort) );
                     clientUpdate();
                     System.out.println("clients: " + getNumMembers());
                 }

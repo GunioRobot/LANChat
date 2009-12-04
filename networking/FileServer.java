@@ -18,6 +18,7 @@ public class FileServer extends Thread {
 	// OVERVIEW: Shares a group of files through HTTP. Returns a HTTP 404
 	// when a request is recieved for an unregistered file.
 	
+	// AF(c) = A server that responds to requests to {c.getURL(f) | c.filenames.contains(f)}
 	// Rep Invariant: server is not null, filenames is not null
 	// Every filename in filenames should represent a valid path on the local filesystem
 	
@@ -25,16 +26,15 @@ public class FileServer extends Thread {
     private Vector<String> filenames;
 
     // constructor
-    public FileServer(String filename, int port) throws IOException {
-        server = new ServerSocket(port);
+    public FileServer() throws IOException {
+        server = new ServerSocket(0);
         filenames = new Vector<String>();
-        filenames.add(filename);
     }
 
     public void addFile(String filename) {
     	// EFFECTS: Adds a filename to the list of known filenames
     	// Prepends a forward slash so that Windows paths can be used
-    	filenames.add("/" + filename);
+    	filenames.add(filename);
     }
     
     public String getURL(String filename) throws UnknownHostException {
@@ -60,14 +60,14 @@ public class FileServer extends Thread {
     }
     
     private class FileRequestHandler extends Thread {
-    	// OVERVIEW: Handles a single HTTP GET request for a file, checking the given server's list of filenames before
-    	// opening the file and sending the data.
+    	// OVERVIEW: Handles a single HTTP GET request for a file, checking the given server's 
+    	// list of filenames before opening the file and sending the data.
     	FileServer server;
     	Socket connection;
     	BufferedReader in;
     	DataOutputStream out;
     	
-    	// constructers
+    	// constructors
     	public FileRequestHandler(FileServer server, Socket connection) throws IOException {
     		this.server = server;
     		this.connection = connection;
@@ -77,6 +77,8 @@ public class FileServer extends Thread {
 
 		@Override
 		public void run() {
+			// EFFECTS: Decodes the URL request and sends the file to the client, if the file
+			// is in server.filenames, else returns HTTP 404 error
 			try {
 				String request = in.readLine();
 
@@ -121,10 +123,5 @@ public class FileServer extends Thread {
 		}
     }
     
-    public static void main(String args[]) throws IOException {
-    	FileServer f = new FileServer("/Users/rob/testfile", 0);
-    	System.out.println(f.getURL("/Users/rob/testfile"));
-    	f.start();
-    }
 }
 

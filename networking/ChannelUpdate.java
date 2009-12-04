@@ -10,18 +10,22 @@ import java.util.Date;
 public class ChannelUpdate implements Message {
     // OVERVIEW: A ChannelUpdate is a packet containing a message, the handle of
     // the client that sent it, and the time it was recieved by the server
-    // The binary format is:
-    // int: Indicates the type of packet (PacketType.CHANNEL_UPDATE)
-    // int: Length of the client handle string in bytes
-    // [handleLength] bytes: The client's handle name as a string
-    // int: Length of the text message
-    // [messageLength] bytes: The message string
-    // long: The time the message was received by the server as a UNIX timestamp
+	
+	// The binary format is:
+	// int: Indicates the type of packet (PacketType.CHANNEL_UPDATE)
+	// int: Length of the client handle string in bytes
+	// [handleLength] bytes: The client's handle name as a string
+	// int: Length of the text message
+	// [messageLength] bytes: The message string
+	// long: The time the message was received by the server as a UNIX timestamp
 
-    private MessageType type = MessageType.CHANNEL_UPDATE;
-    public String clientHandle;
-    public String message;
-    public Date date;
+	// AF(c) = [ c.clientHandle, c.message, c.date ]
+	// The Rep Invariant is
+	// clientHandle != null, message != null, date != null
+    private final MessageType type = MessageType.CHANNEL_UPDATE;
+    public final String clientHandle;
+    public final String message;
+    public final Date date;
 
     // constructors
     public ChannelUpdate(String clientHandle, String message, Date date) {
@@ -42,7 +46,7 @@ public class ChannelUpdate implements Message {
     }
 
     public byte[] getBytes() throws IOException {
-        // EFFECTS: Returns the binary representation of this TextMessage as a byte array
+        // EFFECTS: Returns the binary representation of this ChannelUpdate as a byte array
         ByteArrayOutputStream byte_out = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(byte_out);
 

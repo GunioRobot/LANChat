@@ -7,9 +7,15 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class Refuse implements Message {
-
-    private MessageType type = MessageType.REFUSE;
-    public String reason;
+	// OVERVIEW: A Refuse is a packet sent to the client to indicate the server has
+	// refused to let it join the channel. It contains a string representing the reason why
+	// (e.g. wrong password, duplicate client handle)
+	
+	// AF(c) = [ c.reason ]
+	// Rep Invariant is
+	// reason != null
+    private final MessageType type = MessageType.REFUSE;
+    public final String reason;
 
     // constructors
     public Refuse(String reason) {

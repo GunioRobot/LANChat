@@ -6,7 +6,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class MessageParser {
-    // OVERVIEW: A factory class that parses the correct type of Packet from
+    // OVERVIEW: A class with a factory method that parses the correct type of Packet from
     // a byte array based on the first 4 bytes
 
     public static Message parse(byte[] data) throws IOException {
@@ -37,7 +37,7 @@ public class MessageParser {
     public static String readString(DataInputStream stream) throws IOException {
         // REQUIRES: stream is not null
         // EFFECTS: reads a 32-bit integer length from the stream, then
-        // reads length bytes from the stream and returns it as a String. Throws
+        // reads length bytes from the stream and returns it as a UTF-16 String. Throws
         // IOException if unsuccessful in reading all bytes, or if the length field
         // is greater than the MTU (1024)
         int length = stream.readInt();

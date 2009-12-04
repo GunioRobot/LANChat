@@ -302,9 +302,8 @@ public class ServerWindow extends JFrame {
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
-			String temp;
-			temp = server.shareFile(file.getName());
-			server.sendString(file.getName() + " is shared @ \n" + temp);
+			String url = server.shareFile(file.getCanonicalPath());
+			server.sendString(file.getName() + " is shared @ \n" + url);
 		}
 
 	}

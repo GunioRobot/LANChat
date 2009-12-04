@@ -199,9 +199,8 @@ public class ClientWindow extends JFrame {
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fc.getSelectedFile();
-			String temp;
-			temp = client.shareFile(file.getName());
-			client.send(file.getName() + " is shared @ \n" + temp);
+			String url = client.shareFile(file.getCanonicalPath());
+			client.send(file.getName() + " is shared @ \n" + url);
 		}
 
 	}

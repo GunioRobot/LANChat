@@ -5,15 +5,19 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.SocketAddress;
 
 public class Leave implements Message {
+	// OVERVIEW: A Leave is a packet containing the handle, password and address of a client, and
+	// is sent to the server immediately after destroying a client
 
+	// AF(c) = [ c.clientHandle, c.password, c.clientAddress, c.clientPort ]
+	// Rep Invariant is
+	// clientHandle != null, password != null, clientAddress != null
     private MessageType type = MessageType.LEAVE;
-    public String clientHandle;
-    public String password;
-    public String clientAddress;
-    public int clientPort;
+    public final String clientHandle;
+    public final String password;
+    public final String clientAddress;
+    public final int clientPort;
 
     // constructors
     public Leave(String clientHandle, String password, String clientAddress, int clientPort) {

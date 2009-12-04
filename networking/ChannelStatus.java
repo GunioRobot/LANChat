@@ -5,22 +5,24 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.Date;
 import java.util.Vector;
 
 public class ChannelStatus implements Message {
-    // OVERVIEW: A ChannelUpdate is a packet containing a message, the handle of
-    // the client that sent it, and the time it was recieved by the server
+    // OVERVIEW: A ChannelUpdate is a packet containing a list of the handles
+	// of all clients currently joined to the server
+	
     // The binary format is:
     // int: Indicates the type of packet (PacketType.CHANNEL_UPDATE)
-    // int: Length of the client handle string in bytes
-    // [handleLength] bytes: The client's handle name as a string
-    // int: Length of the text message
-    // [messageLength] bytes: The message string
-    // long: The time the message was received by the server as a UNIX timestamp
+    // int: the number of clients
+	// A list with entries like this:
+	// 	int: length of the client handle string
+    // 	[handleLength] bytes: The client's handle name
 
-    private MessageType type = MessageType.CHANNEL_STATUS;
-    public Vector<String> clientHandles;
+	// AF(c) = { c.clientHandles.get(i) | 0<=i<c.clientHandles.size() }
+	// Rep Invariant is
+	// clientHandles != null
+    private final MessageType type = MessageType.CHANNEL_STATUS;
+    public final Vector<String> clientHandles;
 
     // constructors
     public ChannelStatus(Vector<String> clientHandles) {

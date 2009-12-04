@@ -5,19 +5,23 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.SocketAddress;
 
 public class Join implements Message {
+	// OVERVIEW: A Join is a packet containing the handle, password and address of a client, and
+	// is sent to the server immediately after creating a client
 
-    private MessageType type = MessageType.JOIN;
-    public String clientHandle;
-    public String password;
+	// AF(c) = [ c.clientHandle, c.password, c.clientAddress, c.clientPort ]
+	// Rep Invariant is
+	// clientHandle != null, password != null, clientAddress != null
+    private final MessageType type = MessageType.JOIN;
+    public final String clientHandle;
+    public final String password;
     public String clientAddress;
-    public int clientPort;
+    public final int clientPort;
 
     // constructors
     public Join(String clientHandle, String password, String clientAddress, int clientPort) {
-        // REQUIRES: clientHandle is not null, password is not null
+        // REQUIRES: clientHandle is not null, password is not null, clientAddress is not null
         // EFFECTS: Constructs a new Join with the given data
         this.clientHandle = clientHandle;
         this.password = password;

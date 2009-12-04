@@ -9,16 +9,24 @@ import java.net.MulticastSocket;
 import peer.Server;
 
 public class ServerAnnouncer extends Thread {
-
+	// OVERVIEW: A thread that periodically sends out an Announce message to anyone listening
+	// on the predefined multicast address. Polls the server it's given to determine the fields
+	// of the message each time.
+	
+	// AF(c) = A source of Announce messages for server c.server from c.address, every defaultDelay milliseconds
+	// The Rep Invariant is
+	// socket != null, address != null, delay != null, server != null
+	
     private MulticastSocket socket;
     private InetSocketAddress address;
     private int delay;
     private Server server;
     
-    public static String defaultAddress = "230.0.0.1";
-    public static int defaultPort = 45000;
-    public int defaultDelay = 1000;
+    public static final String defaultAddress = "230.0.0.1";
+    public static final int defaultPort = 45000;
+    public static final int defaultDelay = 1000;
     
+    // constructors
     public ServerAnnouncer(Server server) throws IOException {
         socket = new MulticastSocket(defaultPort);
         socket.joinGroup(Inet4Address.getByName(defaultAddress));
@@ -41,6 +49,9 @@ public class ServerAnnouncer extends Thread {
 
     @Override
     public void run() {
+    	// EFFECTS: Periodically constructs and sends out an Announce message, first polling server for its
+    	// name, address, port, number of members, and whether it needs a password, and putting the information
+    	// into the outgoing message. Runs until thread is interrupted.
         while(!this.isInterrupted()) {
             try {
                 Announce announce = new Announce(server.getServerName(), server.getLocalAddress(), server.getServerPort(), server.getNumMembers(), server.needsPassword);

@@ -7,14 +7,11 @@ import java.net.DatagramSocket;
 import java.net.Inet4Address;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.net.SocketException;
 import java.net.UnknownHostException;
 
 import networking.FileServer;
-import networking.Join;
 import networking.Message;
 import networking.MessageParser;
-import networking.MessageType;
 
 public abstract class Peer extends Thread {
     // OVERVIEW: A peer represents a client or server on the network. It can 
@@ -48,27 +45,35 @@ public abstract class Peer extends Thread {
         this.serverAddress = new InetSocketAddress(serverAddress, serverPort);
 
 		if(!this.serverAddress.getAddress().isReachable(10)) {
-			System.out.println("Warning: server is not reachable");
+			System.err.println("Warning: server is not reachable");
 		}
 	}
 	
 	public String getLocalAddress() {
+		// EFFECTS: Returns the address of localhost as a String if available, else returns the
+		// local address of socket
 		try {
 			return Inet4Address.getLocalHost().getHostAddress();
 		} catch (UnknownHostException e) {
 			return socket.getLocalAddress().getHostAddress();
 		}
 	}
+	
 	public int getPort() {
+		// EFFECTS: Returns the port socket is currently bound to
 		return socket.getLocalPort();
 	}
 
-
+	public SocketAddress getLocalSocketAddress() {
+		// EFFECTS: returns the local socket address (host:port) the socket is
+		// currently bound to
+		return socket.getLocalSocketAddress();
+	}
 
 	public void send(Message message)
 		throws IOException {
-        // REQUIRES: data is not null
-        // EFFECTS: Encapsulates data in a datagram and sends to the server
+        // REQUIRES: message is not null
+        // EFFECTS: Encapsulates message in a datagram and sends to the server
         System.out.println("[" + getPeerName() + "] Sending " + message.getType() + " from port " + socket.getLocalPort() + " to " + this.serverAddress);
         this.sendTo(message, this.serverAddress);
 	}
@@ -93,6 +98,9 @@ public abstract class Peer extends Thread {
 
     @Override
     public void run() {
+    	// EFFECTS: Listens for any new packets from other peers. When a packet is
+    	// received, it is parsed into a Message and handleMessage is called with the
+    	// new Message as the argument
         DatagramPacket packet;
         Message message;
         
@@ -119,19 +127,13 @@ public abstract class Peer extends Thread {
 		System.out.println("[" + getPeerName() + "] shut down");
     }
 	
-	public SocketAddress getLocalSocketAddress() {
-		return socket.getLocalSocketAddress();
-	}
 
     protected void handleMessage(Message message, InetSocketAddress source) {
-
+    	// EFFECTS: A base handler for all messages. Just prints out the peer name and the
+    	// type of message received.
+    	
     	// Print out type of packet
-		//System.out.println("[" + getPeerName() + "] Received a " + message.getType());
-
-		// Fix IP address of JOIN messages since some machines don't know their own address...
-		if(message.getType() == MessageType.JOIN) {
-			((Join)message).clientAddress = source.getHostName();
-		}
+		System.out.println("[" + getPeerName() + "] Received a " + message.getType());
     }
     
     public String getPeerName() {
@@ -141,12 +143,10 @@ public abstract class Peer extends Thread {
 
     public String shareFile(String filename) throws IOException {
     	if(fileserver == null) {
-    		fileserver = new FileServer(filename, 0);
+    		fileserver = new FileServer();
     		fileserver.start();
     	}
-    	else {
-    		fileserver.addFile(filename);
-    	}
+    	fileserver.addFile(filename);
     	return fileserver.getURL(filename);
     }
 }
